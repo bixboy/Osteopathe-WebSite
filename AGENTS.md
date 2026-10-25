@@ -25,10 +25,12 @@ Langue du site, du contenu et des commits : **français**.
 | Couleurs, typos, espacements | `src/styles/tokens.css` |
 | Composants d'UI existants (à réutiliser) | `docs/DESIGN.md § Composants` |
 | Lister les soins / la FAQ | `getSoins()` / `getFaq()` de `src/lib/content.ts` |
-| `<head>`, SEO, JSON-LD | `src/layouts/BaseLayout.astro`, `src/components/Seo.astro`, `src/lib/schema.ts` |
+| `<head>`, SEO, JSON-LD (graphe site / cabinet / praticienne) | `src/layouts/BaseLayout.astro`, `src/components/Seo.astro`, `src/lib/schema.ts` |
+| Référencement IA (`llms.txt`), robots | `src/lib/llms.ts`, `src/pages/llms*.txt.ts`, `src/pages/robots.txt.ts` |
+| Liens internes (sous-chemin GitHub Pages) | `src/lib/paths.ts` (`link`, `absoluteUrl`) |
 | Pages fixes | `src/pages/*.astro` |
 | Domaine du site | `astro.config.mjs` (`site`) |
-| Déploiement, config serveur Apache | `.github/workflows/deploy.yml`, `public/.htaccess` |
+| Déploiement | `.github/workflows/pages.yml` (GitHub Pages, actuel), `deploy.yml` (OVH, manuel), `public/.htaccess` |
 | Avis Google (1 fichier = 1 avis) | `src/content/avis/*.md` (modèle : `_modele.md`) |
 | Note Google globale, Place ID, carte | `site.google` dans `site.ts`, `docs/GOOGLE.md` |
 
@@ -45,6 +47,10 @@ Langue du site, du contenu et des commits : **français**.
 9. Images via `astro:assets` (`<Image />`) depuis `src/assets/images/`, avec `alt` descriptif en français.
    `widths` jamais supérieures à la largeur d'origine (`image.width`).
 10. Changement minimal : ne pas reformater ni refactorer ce qui n'est pas demandé.
+11. **Liens internes via `link()`** de `src/lib/paths.ts` (jamais `href="/..."` en dur) : le site
+    tourne sous un sous-chemin sur GitHub Pages. URL absolues : `absoluteUrl()`.
+12. SEO : chaque page a un `title` mots-clés en premier (le nom est ajouté automatiquement) et des
+    `breadcrumbs` ; les faits (tarif, horaires…) viennent de `site.ts`, jamais recopiés.
 
 ## Docs (à lire seulement si la tâche le nécessite)
 
@@ -55,7 +61,7 @@ Langue du site, du contenu et des commits : **français**.
 - `docs/SEO.md` : SEO local, données structurées, contraintes légales santé
 - `docs/CONTENT.md` : faits sur la cliente + statut de validation
 - `docs/GOOGLE.md` : carte Google Maps (au clic) et avis Google (saisis à la main, sans API)
-- `docs/DEPLOIEMENT.md` : mise en ligne GitHub → OVH (Action, branche `production`, `.htaccess`)
+- `docs/DEPLOIEMENT.md` : GitHub Pages (prévisualisation actuelle) et mise en ligne OVH
 - `docs/DECISIONS.md` : choix techniques et leur raison (ajouter une ligne à chaque décision structurante)
 
 ## Ne pas lire

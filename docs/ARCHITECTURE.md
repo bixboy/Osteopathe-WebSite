@@ -23,11 +23,14 @@ src/
     schema.ts             Générateurs JSON-LD (MedicalBusiness, FAQPage)
     i18n.ts               Type Lang, libellés FR/EN du layout, traduction des valeurs de site.ts
     tokens.ts             Lecture d'une variable de tokens.css depuis TS (images, theme-color)
+    paths.ts              link() / absoluteUrl() : liens internes avec le sous-chemin éventuel
+    llms.ts               Contenu de /llms.txt et /llms-full.txt (résumé pour les assistants IA)
     brand-images.ts       Favicon / icône Apple / image de partage générés au build (satori + sharp)
   layouts/
     BaseLayout.astro      <html>, <head>, Header, <main>, Footer, JSON-LD
   components/             Composants d'UI, un fichier = un composant, styles scopés (liste : docs/DESIGN.md)
-  pages/                  Routage par fichier (+ robots.txt.ts généré)
+  pages/                  Routage par fichier ; adresses en dossier (/a-propos/ -> a-propos/index.html)
+                          + fichiers générés : robots.txt, llms.txt, llms-full.txt, og.png, favicons
   styles/
     tokens.css            Variables CSS (couleurs, typo, espacements)
     global.css            Reset + utilitaires (.container, .prose, .visually-hidden)

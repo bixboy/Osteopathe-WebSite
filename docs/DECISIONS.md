@@ -25,3 +25,8 @@ Format : date · décision · raison. Ajouter une ligne à chaque choix structur
 | 2026-10-25 | Carrousels mobiles en CSS natif (scroll-snap), pas de librairie | 0 JS, glissement fluide natif, accessible au clavier et lecteur d'écran |
 | 2026-10-25 | Propriétés d'animation détaillées pour les scroll-driven animations | lightningcss fusionne `animation-timeline` dans le raccourci `animation`, refusé par Chrome |
 | 2026-10-25 | Hébergement OVH mutualisé via son intégration Git, branche `production` construite par une GitHub Action | OVH ne lance pas de build ; aucun identifiant FTP stocké sur GitHub ; historique continu pour que le pull d'OVH fonctionne |
+| 2026-10-25 | Adresses en dossier (`build.format: 'directory'`, `trailingSlash: 'always'`) | Servies nativement par GitHub Pages et Apache, sans réécriture ; remplace le format fichier |
+| 2026-10-25 | `site` / `base` lus dans l'environnement + `link()` pour tous les liens | Même code pour GitHub Pages (sous-chemin) et OVH (racine) |
+| 2026-10-25 | Prévisualisation GitHub Pages en `noindex` (`SITE_PREVIEW`) | Ne pas faire indexer une adresse provisoire qui concurrencerait le futur domaine |
+| 2026-10-25 | JSON-LD en un graphe relié (WebSite, cabinet, praticienne, Service, BreadcrumbList, FAQPage) | Identité d'entité claire pour Google et les moteurs IA ; sameAs Doctolib + Google Maps |
+| 2026-10-25 | `llms.txt` / `llms-full.txt` générés au build | Résumé factuel pour les assistants IA, toujours cohérent avec le site |
