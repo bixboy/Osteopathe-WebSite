@@ -5,6 +5,7 @@ import BookingButton from './BookingButton.astro';
 import Logo from './Logo.astro';
 import OpenStatus from './OpenStatus.astro';
 import { ui, type Lang } from '../lib/i18n';
+import { link } from '../lib/paths';
 
 interface Props {
   lang?: Lang;
@@ -17,7 +18,7 @@ const switcher = lang === 'en'
   : { href: '/en', label: 'English', lang: 'en' };
 
 const current = Astro.url.pathname;
-const isActive = (href: string) => (href === '/' ? current === '/' : current.startsWith(href));
+const isActive = (href: string) => (href === '/' ? current === link('/') : current.startsWith(link(href)));
 ---
 
 <header class="header">
@@ -42,7 +43,7 @@ const isActive = (href: string) => (href === '/' ? current === '/' : current.sta
         {
           mainNav.map(({ label, href }, index) => (
             <li style={`--i: ${index}`}>
-              <a class="nav__link" href={href} aria-current={isActive(href) ? 'page' : undefined}>
+              <a class="nav__link" href={link(href)} aria-current={isActive(href) ? 'page' : undefined}>
                 {label}
                 <ArrowRight class="nav__arrow" size={20} aria-hidden="true" />
               </a>
@@ -53,7 +54,7 @@ const isActive = (href: string) => (href === '/' ? current === '/' : current.sta
 
       <div class="nav__footer">
         <div class="nav__status"><OpenStatus lang={lang} /></div>
-        <a class="nav__lang" href={switcher.href} hreflang={switcher.lang} lang={switcher.lang}>
+        <a class="nav__lang" href={link(switcher.href)} hreflang={switcher.lang} lang={switcher.lang}>
           {switcher.label}
         </a>
         <BookingButton size="sm" label={ui[lang].bookShort} />

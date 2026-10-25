@@ -1,5 +1,6 @@
 ---
 title: "Ostéopathie pendant la grossesse et après l'accouchement"
+seoTitle: "Ostéopathe femme enceinte et post-partum à Bayeux"
 shortTitle: "Grossesse & post-partum"
 icon: "pregnancy"
 description: "Accompagnement ostéopathique de la femme enceinte à Bayeux, pendant la grossesse et après l'accouchement."

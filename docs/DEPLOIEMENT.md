@@ -1,58 +1,67 @@
-# Déploiement (GitHub → OVH)
+# Déploiement
+
+Deux cibles, même code (adresse et sous-chemin lus dans l'environnement, voir `astro.config.mjs`) :
+
+| | GitHub Pages (actuel) | OVH (plus tard) |
+|---|---|---|
+| Workflow | `.github/workflows/pages.yml`, à chaque push sur `main` | `.github/workflows/deploy.yml`, manuel |
+| Adresse | `https://bixboy.github.io/Osteopathe-WebSite/` | domaine définitif, à la racine |
+| Indexation | **non** (`SITE_PREVIEW=true` : noindex + robots `Disallow`) | oui |
+
+## GitHub Pages (prévisualisation)
+
+Mise en place, une seule fois :
+
+1. **Visibilité du dépôt** : GitHub Pages n'est disponible sur un dépôt **privé** qu'avec un
+   abonnement payant (Pro, Team…). Compte gratuit : passer le dépôt en public
+   (*Settings > General > Danger Zone > Change visibility*). Le site publié est public dans tous les cas.
+2. **Activer Pages** : dépôt → *Settings > Pages* → *Build and deployment* → Source :
+   **GitHub Actions**.
+3. Pousser sur `main` → onglet *Actions* → « GitHub Pages » doit être vert → site en ligne à
+   l'adresse ci-dessus (lien aussi affiché dans le résumé du job).
+
+Pour qu'elle soit indexée (si elle devient le site officiel) : `SITE_PREVIEW: false` dans `pages.yml`.
+
+## OVH (mise en ligne définitive)
 
 ```
-push sur main ──► GitHub Action (.github/workflows/deploy.yml)
-                    npm ci + npm run build
-                    publie dist/ sur la branche `production`
-                         │
-                         ▼ webhook
-                  Hébergement web OVH (intégration Git, branche `production`)
+Run workflow ──► deploy.yml : npm ci + npm run build, publie dist/ sur la branche `production`
+                       │
+                       ▼ webhook
+               Hébergement web OVH (intégration Git, branche `production`)
 ```
 
 On ne travaille **jamais** sur `production` : elle est réécrite à chaque déploiement.
-Le dépôt GitHub `bixboy/Osteopathe-WebSite` est privé → adresse SSH + clé côté OVH.
+Le dépôt est privé → adresse SSH + clé côté OVH.
 
-## Mise en place (une seule fois)
-
-1. **Domaine** : remplacer `site` dans `astro.config.mjs` par le vrai domaine
-   (ex. `https://www.mon-domaine.fr`). Tant que c'est le domaine provisoire, l'Action échoue
-   volontairement.
-2. **Premier déploiement** : pousser sur `main` → onglet **Actions** du dépôt : le job
-   « Déploiement » doit être vert → la branche `production` apparaît.
-3. **OVH, dossier vide** : le dossier racine de l'hébergement (souvent `www/`) doit être vide
-   (supprimer la page d'attente d'OVH via FTP ou le gestionnaire de fichiers).
-4. **OVH, associer Git** : *Web Cloud > Hébergements > (l'hébergement) > Mes sites* →
-   **⁝** à droite du site → **Associer Git** :
-   - Dépôt : `git@github.com:bixboy/Osteopathe-WebSite.git`
-   - Branche : `production`
-   - Copier la **clé SSH** affichée et la **URL de webhook**, puis **Appliquez la configuration**.
-5. **GitHub, clé SSH** : *Settings (du profil) > SSH and GPG keys > New SSH key* → titre
-   « OVHcloud », type *Authentication key*, coller la clé.
-6. **OVH, premier déploiement** : *Mes sites* → **⁝** → **Déployer Git** → Confirmer.
-   La colonne Git doit passer à **Activé**.
-7. **GitHub, webhook** (déploiement automatique) : dépôt → *Settings > Webhooks > Add webhook* :
-   Payload URL = URL de webhook OVH, Content type `application/json`, *Just the push event*.
-   Vérifier dans *Recent Deliveries* : réponse **200**.
-8. **HTTPS** : activer le certificat SSL gratuit (Let's Encrypt) de l'hébergement dans
-   l'espace client OVH. `.htaccess` redirige ensuite tout le trafic vers HTTPS.
+1. **Domaine** : remplacer le domaine provisoire dans `astro.config.mjs`. Tant qu'il est là,
+   `deploy.yml` échoue volontairement.
+2. **Premier build** : onglet *Actions* → « Déploiement » → *Run workflow* → la branche
+   `production` apparaît. (Pour automatiser ensuite : remettre `push: branches: [main]`.)
+3. **OVH, dossier vide** : vider le dossier racine de l'hébergement (souvent `www/`).
+4. **OVH, associer Git** : *Web Cloud > Hébergements > (l'hébergement) > Mes sites* → **⁝** →
+   **Associer Git** : dépôt `git@github.com:bixboy/Osteopathe-WebSite.git`, branche `production`.
+   Copier la **clé SSH** et l'**URL de webhook**, puis **Appliquez la configuration**.
+5. **GitHub, clé SSH** : *Settings (profil) > SSH and GPG keys > New SSH key* → coller la clé.
+6. **OVH** : **⁝** → **Déployer Git** → Confirmer. La colonne Git passe à **Activé**.
+7. **GitHub, webhook** : dépôt → *Settings > Webhooks > Add webhook* : URL OVH,
+   `application/json`, *Just the push event* ; vérifier une réponse **200**.
+8. **HTTPS** : activer le certificat SSL gratuit dans l'espace client OVH (`.htaccess` redirige
+   ensuite vers HTTPS).
+9. **SEO** : suivre `docs/SEO.md § À faire hors du site` (Search Console, Bing, fiche Google…).
 
 Référence : https://docs.ovhcloud.com/fr/guides/web-cloud/web-hosting/git-integration-webhosting
 
-## Publier une modification
-
-`git push` sur `main` → l'Action construit et publie → le webhook déclenche le déploiement OVH
-(quelques minutes). Relancer à la main : onglet *Actions* → « Déploiement » → *Run workflow*.
-
-## Fichiers concernés
-
-- `.github/workflows/deploy.yml` : build + publication sur `production` (historique continu,
-  pas de push forcé : OVH récupère la branche par un simple pull).
-- `public/.htaccess` : Apache OVH — adresses sans `.html` ni slash final, page 404, HTTPS,
-  cache long pour `/_astro/`, compression, en-têtes de sécurité.
+`public/.htaccess` (Apache OVH, ignoré par GitHub Pages) : page 404, HTTPS, cache long pour
+`/_astro/`, compression, en-têtes de sécurité. Les adresses en dossier (`/a-propos/`) sont servies
+nativement, sans réécriture.
 
 ## En cas de problème
 
-- Action rouge « Domaine provisoire » : étape 1.
+- Liens cassés uniquement sur GitHub Pages : un lien écrit `href="/..."` au lieu de `link()`
+  (`src/lib/paths.ts`).
+- Action « Déploiement » rouge « Domaine provisoire » : OVH, étape 1.
 - Git « Erreur » côté OVH : *⁝ > Informations du dernier déploiement* ; souvent clé SSH absente
   de GitHub ou dossier non vide.
-- Page 404 ou 403 sur `/soins` : vérifier que `.htaccess` est bien à la racine du dossier publié.
+- Build local sous Git Bash avec `BASE_PATH=/...` : préfixer de `MSYS_NO_PATHCONV=1`
+  (sinon Git Bash transforme le chemin en `C:/Program Files/Git/...`).

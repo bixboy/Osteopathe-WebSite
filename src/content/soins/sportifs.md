@@ -1,5 +1,6 @@
 ---
 title: "Ostéopathie du sportif"
+seoTitle: "Ostéopathe du sport à Bayeux"
 shortTitle: "Sportifs"
 icon: "sport"
 description: "Ostéopathie du sport à Bayeux : préparation, récupération et accompagnement des sportifs de tous niveaux."

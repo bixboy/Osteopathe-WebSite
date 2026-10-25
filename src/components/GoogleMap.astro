@@ -2,6 +2,7 @@
 import { MapPin } from '@lucide/astro';
 import Button from './Button.astro';
 import { site } from '../data/site';
+import { link } from '../lib/paths';
 ---
 
 <!--
@@ -14,7 +15,7 @@ import { site } from '../data/site';
     <p class="map__title">Carte Google Maps</p>
     <p class="map__text">
       L’affichage de la carte charge des contenus de Google, susceptible de déposer des cookies.{' '}
-      <a href="/confidentialite">En savoir plus</a>
+      <a href={link('/confidentialite')}>En savoir plus</a>
     </p>
     <div class="map__actions">
       <Button size="sm" data-map-load>Afficher la carte</Button>

@@ -1,12 +1,12 @@
-# Construit le site à chaque push sur `main` et publie le résultat (dist/) sur la branche
-# `production`, que l'hébergement OVH déploie via son intégration Git (webhook).
+# Mise en ligne définitive sur OVH : déclenchement MANUEL tant que le domaine n'est pas prêt
+# (onglet Actions > « Déploiement » > Run workflow). Prévisualisation actuelle : pages.yml.
+# Construit le site et publie dist/ sur la branche `production`, que l'hébergement OVH déploie
+# via son intégration Git (webhook). Pour automatiser : remettre « push: branches: [main] ».
 # Procédure complète : docs/DEPLOIEMENT.md
 
 name: Déploiement
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch: # bouton « Run workflow » dans l'onglet Actions
 
 permissions:

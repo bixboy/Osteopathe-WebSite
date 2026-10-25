@@ -1,40 +1,53 @@
 ---
+import { SITE_PREVIEW } from 'astro:env/server';
 import { site } from '../data/site';
 import type { Lang } from '../lib/i18n';
+import { absoluteUrl } from '../lib/paths';
 
 interface Props {
+  /** Titre de la page, mots-clés en premier (ex. « Ostéopathe du sport à Bayeux »). */
   title?: string;
   description?: string;
   noindex?: boolean;
   lang: Lang;
-  /** Chemin de la même page dans l'autre langue (balises hreflang). */
+  /** Chemin de la même page dans l'autre langue, ex. "/en" (balises hreflang). */
   alternate?: string;
 }
 
 const { title, description = site.description, noindex = false, lang, alternate } = Astro.props;
-const suffix = lang === 'en' ? 'osteopath in Bayeux' : 'ostéopathe à Bayeux';
-const fullTitle = title ? `${title} | ${site.name}, ${suffix}` : site.title;
-const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL('/og.png', Astro.site);
+const fullTitle = title ? `${title} | ${site.name}` : site.title;
+// Astro.url inclut déjà le sous-chemin éventuel (GitHub Pages)
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = absoluteUrl('/og.png', Astro.site);
 const otherLang: Lang = lang === 'en' ? 'fr' : 'en';
+const locales = { fr: 'fr_FR', en: 'en_GB' } satisfies Record<Lang, string>;
+
+/*
+ * Indexable : grands aperçus d'image et extraits sans limite de longueur (Google, moteurs IA).
+ * Prévisualisation (GitHub Pages) : rien n'est indexé, pour ne pas concurrencer le futur domaine.
+ */
+const robots =
+  noindex || SITE_PREVIEW ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1';
 ---
 
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
+<meta name="robots" content={robots} />
 <link rel="canonical" href={canonical} />
-{noindex && <meta name="robots" content="noindex" />}
 {
   alternate && (
     <>
       <link rel="alternate" hreflang={lang} href={canonical} />
-      <link rel="alternate" hreflang={otherLang} href={new URL(alternate, Astro.site)} />
+      <link rel="alternate" hreflang={otherLang} href={absoluteUrl(alternate, Astro.site)} />
+      <link rel="alternate" hreflang="x-default" href={lang === 'fr' ? canonical : absoluteUrl(alternate, Astro.site)} />
     </>
   )
 }
 
 <meta property="og:type" content="website" />
-<meta property="og:locale" content={lang === 'en' ? 'en_GB' : 'fr_FR'} />
-<meta property="og:site_name" content={site.title} />
+<meta property="og:locale" content={locales[lang]} />
+{alternate && <meta property="og:locale:alternate" content={locales[otherLang]} />}
+<meta property="og:site_name" content={site.name} />
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />

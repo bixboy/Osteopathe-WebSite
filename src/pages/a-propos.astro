@@ -14,7 +14,10 @@ const timelines: { title: string; icon: typeof GraduationCap; items: ParcoursIte
 ];
 ---
 
-<BaseLayout title="À propos" description={`Parcours, formations et domaines d’expertise de ${site.name}, ostéopathe D.O. à Bayeux.`}>
+<BaseLayout
+  title="Ostéopathe D.O. à Bayeux : parcours et formations"
+  breadcrumbs={[{ name: 'À propos', path: '/a-propos' }]}
+  description={`Parcours, formations et domaines d’expertise de ${site.name}, ostéopathe D.O. à Bayeux.`}>
   <PageHeader eyebrow="À propos" title={site.name} lead={`${site.profession} installée à Bayeux depuis 2017.`} />
 
   <section class="section">

@@ -105,3 +105,7 @@ Arborescence proposée :
 - [x] Déploiement préparé : GitHub Action → branche `production`, `.htaccess` Apache, hébergeur dans les mentions légales
 - [ ] 👤 Domaine définitif dans `astro.config.mjs`, puis étapes de `docs/DEPLOIEMENT.md`
 - [ ] 👤 Téléphone de l'hébergeur (LCEN) dans `site.legal.host.phone`
+- [x] GitHub Pages : workflow `pages.yml`, liens via `link()`, adresses en dossier, prévisualisation non indexée
+- [x] SEO / IA : graphe JSON-LD relié, Service + fil d'Ariane, titres orientés recherche, robots IA, `llms.txt`, FAQ enrichie, tarif visible
+- [ ] 👤 Activer GitHub Pages (Settings > Pages > GitHub Actions) ; dépôt public si compte gratuit
+- [ ] 👤 Actions hors site : `docs/SEO.md § À faire hors du site` (après mise en ligne sur le domaine)

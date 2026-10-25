@@ -1,5 +1,9 @@
+import { formations } from '../data/parcours';
 import { site } from '../data/site';
 import { formatList, formatOpeningHours, formatPrice } from './format';
+
+/** « Diplôme d’ostéopathie (D.O.) » -> « diplôme d’ostéopathie (D.O.) » (sigles conservés) */
+const lowerFirst = (text: string) => text.charAt(0).toLowerCase() + text.slice(1);
 
 export interface FaqItem {
   question: string;
@@ -35,6 +39,20 @@ export function getPracticalFaq(): FaqItem[] {
       answer: `Les consultations peuvent se dérouler en ${formatList(languages)}.`,
     },
   ];
+
+  items.push({
+    question: 'Comment prendre rendez-vous ?',
+    answer: `Les rendez-vous se prennent en ligne sur Doctolib, à tout moment : ${site.booking.url}`,
+  });
+
+  const diploma = formations.find((formation) => formation.diploma);
+  if (diploma) {
+    const others = formations.filter((formation) => !formation.diploma).map(({ title, period }) => `${lowerFirst(title)} (${period})`);
+    items.push({
+      question: `Quelle est la formation de ${site.name} ?`,
+      answer: `${site.name} est titulaire du ${lowerFirst(diploma.title)} de l’${diploma.place} (${diploma.period}). Elle a complété sa formation par : ${others.join(', ')}.`,
+    });
+  }
 
   if (acceptsNewPatients) {
     items.push({
