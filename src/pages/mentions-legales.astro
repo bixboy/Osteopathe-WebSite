@@ -20,7 +20,11 @@ const { legal, address } = site;
         N° ADELI / RPPS : {legal.rppsOrAdeli || 'à compléter'}
       </p>
       <h2>Hébergeur</h2>
-      <p>{legal.host.name || 'à compléter'}</p>
+      <p>
+        {legal.host.name}<br />
+        {legal.host.address}<br />
+        Téléphone : {legal.host.phone || 'à compléter'}
+      </p>
     </div>
   </section>
 </BaseLayout>

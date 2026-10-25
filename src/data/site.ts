@@ -105,7 +105,8 @@ export const site = {
   legal: {
     siret: '',
     rppsOrAdeli: '10010121324', // n° RPPS (source : Doctolib)
-    host: { name: '', address: '' }, // hébergeur
+    // Hébergeur (source : mentions légales d'OVHcloud) — TODO: téléphone, exigé par la LCEN, à vérifier
+    host: { name: 'OVH SAS', address: '2 rue Kellermann, 59100 Roubaix, France', phone: '' },
   },
 } as const;
 

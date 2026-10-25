@@ -295,10 +295,6 @@ const firstName = site.name.split(' ')[0];
   }
 
   /* ---------- Hero sur mobile et tablette ---------- */
-  .hero__actions > :global(a) {
-    flex: 1 1 14rem;
-  }
-
   @media (max-width: 59.99rem) {
     /* La forme décorative serait masquée par la carte : on garde la carte seule */
     .hero__shape,
@@ -325,6 +321,11 @@ const firstName = site.name.split(' ')[0];
 
     .hero__inner {
       gap: var(--space-5);
+    }
+
+    /* Boutons pleine largeur, l'un sous l'autre */
+    .hero__actions > :global(a) {
+      flex: 1 1 100%;
     }
 
     /* Étiquettes sur une seule ligne qu'on fait glisser, fondu sur le bord droit */

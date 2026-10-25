@@ -1,0 +1,45 @@
+# Configuration Apache pour l'hébergement web OVH (copiée telle quelle dans dist/ au build).
+# Le site est statique : chaque page est un fichier .html, servi sans extension ni slash final
+# (astro.config.mjs : build.format 'file', trailingSlash 'never').
+
+Options -Indexes -MultiViews
+# /soins est à la fois une page (soins.html) et un dossier (soins/) : pas de slash ajouté d'office
+DirectorySlash Off
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # HTTPS obligatoire (activer le certificat SSL gratuit dans l'espace client OVH au préalable)
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # /page/ -> /page (une seule adresse par page)
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+  # /a-propos -> a-propos.html
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Fichiers d'Astro dont le nom contient une empreinte : ils ne changent jamais, cache d'un an
+  <If "%{REQUEST_URI} =~ m#^/_astro/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+  # Pages : toujours revalidées, pour que les mises à jour soient visibles tout de suite
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain application/javascript application/json application/xml image/svg+xml
+</IfModule>

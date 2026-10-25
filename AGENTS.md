@@ -28,6 +28,7 @@ Langue du site, du contenu et des commits : **français**.
 | `<head>`, SEO, JSON-LD | `src/layouts/BaseLayout.astro`, `src/components/Seo.astro`, `src/lib/schema.ts` |
 | Pages fixes | `src/pages/*.astro` |
 | Domaine du site | `astro.config.mjs` (`site`) |
+| Déploiement, config serveur Apache | `.github/workflows/deploy.yml`, `public/.htaccess` |
 | Avis Google (1 fichier = 1 avis) | `src/content/avis/*.md` (modèle : `_modele.md`) |
 | Note Google globale, Place ID, carte | `site.google` dans `site.ts`, `docs/GOOGLE.md` |
 
@@ -54,6 +55,7 @@ Langue du site, du contenu et des commits : **français**.
 - `docs/SEO.md` : SEO local, données structurées, contraintes légales santé
 - `docs/CONTENT.md` : faits sur la cliente + statut de validation
 - `docs/GOOGLE.md` : carte Google Maps (au clic) et avis Google (saisis à la main, sans API)
+- `docs/DEPLOIEMENT.md` : mise en ligne GitHub → OVH (Action, branche `production`, `.htaccess`)
 - `docs/DECISIONS.md` : choix techniques et leur raison (ajouter une ligne à chaque décision structurante)
 
 ## Ne pas lire

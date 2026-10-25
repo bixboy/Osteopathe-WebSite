@@ -1,0 +1,68 @@
+# Construit le site à chaque push sur `main` et publie le résultat (dist/) sur la branche
+# `production`, que l'hébergement OVH déploie via son intégration Git (webhook).
+# Procédure complète : docs/DEPLOIEMENT.md
+
+name: Déploiement
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # bouton « Run workflow » dans l'onglet Actions
+
+permissions:
+  contents: write # pousser sur la branche production
+
+concurrency:
+  group: deploiement
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Vérifier que le domaine définitif est configuré
+        run: |
+          if grep -q "osteopathe-bayeux.example" astro.config.mjs; then
+            echo "::error file=astro.config.mjs::Domaine provisoire : remplacer « site » par le vrai domaine avant de publier."
+            exit 1
+          fi
+
+      - run: npm ci
+
+      - name: Construire le site (vérification des types et du contenu incluse)
+        run: npm run build
+
+      # Historique continu (pas de push forcé) : OVH récupère la branche par un simple « pull »
+      - name: Publier dist/ sur la branche production
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REPO="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git ls-remote --exit-code --heads "$REPO" production > /dev/null; then
+            git clone --depth 1 --branch production "$REPO" ../publication
+          else
+            git init --initial-branch=production ../publication
+            git -C ../publication remote add origin "$REPO"
+          fi
+
+          # Remplace tout le contenu publié (sauf .git) par le nouveau build
+          find ../publication -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a dist/. ../publication/
+
+          cd ../publication
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --all
+          if git diff --cached --quiet; then
+            echo "Aucun changement à publier."
+            exit 0
+          fi
+          git commit --message "Déploiement de ${GITHUB_SHA::7}"
+          git push origin production
