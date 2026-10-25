@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { ArrowRight } from '@lucide/astro';
 import SoinIcon from './SoinIcon.astro';
+import { link } from '../lib/paths';
 
 interface Props {
   soin: CollectionEntry<'soins'>;
@@ -14,7 +15,7 @@ const { id, data } = Astro.props.soin;
   <span class="card__icon"><SoinIcon name={data.icon} size={28} /></span>
   <h3 class="card__title">
     <!-- Le lien couvre toute la carte via ::after -->
-    <a href={`/soins/${id}`}>{data.shortTitle}</a>
+    <a href={link(`/soins/${id}`)}>{data.shortTitle}</a>
   </h3>
   <p>{data.summary}</p>
   <span class="card__more" aria-hidden="true">En savoir plus <ArrowRight size={16} /></span>

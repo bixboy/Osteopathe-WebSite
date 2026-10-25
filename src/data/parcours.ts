@@ -9,6 +9,8 @@ export interface ParcoursItem {
   title: string;
   /** Organisme, lieu ou service. */
   place?: string;
+  /** Diplôme principal (repris dans les données structurées de la praticienne). */
+  diploma?: boolean;
 }
 
 export const formations: ParcoursItem[] = [
@@ -20,7 +22,12 @@ export const formations: ParcoursItem[] = [
     title: 'Formation complémentaire en périnatalité : nourrissons et femmes en période post-partum',
     place: 'Ostéonat',
   },
-  { period: '2015', title: 'Diplôme d’ostéopathie (D.O.)', place: 'Institut Supérieur d’Ostéopathie Paris (ISO-Paris)' },
+  {
+    period: '2015',
+    title: 'Diplôme d’ostéopathie (D.O.)',
+    place: 'Institut Supérieur d’Ostéopathie Paris (ISO-Paris)',
+    diploma: true,
+  },
 ];
 
 export const experiences: ParcoursItem[] = [

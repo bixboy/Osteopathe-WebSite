@@ -1,24 +1,30 @@
 ---
-import { Clock, CreditCard, Languages, MapPin, Phone } from '@lucide/astro';
+import { Clock, CreditCard, Euro, Languages, MapPin, Phone } from '@lucide/astro';
 import { site } from '../data/site';
-import { formatList, formatOpeningHours, phoneHref } from '../lib/format';
+import { formatList, formatOpeningHours, formatPrice, phoneHref } from '../lib/format';
 import { toEnglish, type Lang } from '../lib/i18n';
 import OpenStatus from './OpenStatus.astro';
 
 interface Props {
   /** Masque paiement et langues (version courte pour le hero et la sidebar). */
   compact?: boolean;
+  /** Ligne de tarif (masquée là où un encadré Tarifs existe déjà). */
+  price?: boolean;
   lang?: Lang;
 }
 
-const { compact = false, lang = 'fr' } = Astro.props;
+const { compact = false, price = true, lang = 'fr' } = Astro.props;
 const { address, contact } = site;
+const lowestPrice = Math.min(...site.prices.map((price) => price.amount));
+const singlePrice = site.prices.length === 1;
 
 const t = {
   fr: {
     address: 'Adresse',
     mapLink: '(voir sur la carte, nouvel onglet)',
     hours: 'Horaires',
+    price: 'Tarif',
+    priceText: `${singlePrice ? 'Consultation :' : 'À partir de'} ${formatPrice(lowestPrice)}`,
     phone: 'Téléphone',
     payment: 'Paiement',
     paymentText: site.payment.join(' · '),
@@ -29,6 +35,8 @@ const t = {
     address: 'Address',
     mapLink: '(view on map, new tab)',
     hours: 'Opening hours',
+    price: 'Fee',
+    priceText: `${singlePrice ? 'Session:' : 'From'} ${formatPrice(lowestPrice, 'en')}`,
     phone: 'Phone',
     payment: 'Payment',
     paymentText: `Payment by ${formatList(site.payment.map(toEnglish), 'en')}`,
@@ -61,6 +69,15 @@ const t = {
       <OpenStatus lang={lang} />
     </dd>
   </div>
+
+  {
+    price && (
+      <div class="info__row">
+        <dt><Euro size={20} aria-hidden="true" /><span class="visually-hidden">{t.price}</span></dt>
+        <dd>{t.priceText}</dd>
+      </div>
+    )
+  }
 
   {
     contact.phone && (

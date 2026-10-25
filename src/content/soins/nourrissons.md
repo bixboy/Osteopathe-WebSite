@@ -1,5 +1,6 @@
 ---
 title: "Ostéopathie pour les nourrissons et les enfants"
+seoTitle: "Ostéopathe pour bébés et enfants à Bayeux"
 shortTitle: "Nourrissons & enfants"
 icon: "baby"
 description: "Ostéopathie pédiatrique à Bayeux, du nourrisson à l'adolescent. Une approche douce et adaptée à chaque âge."

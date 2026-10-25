@@ -1,5 +1,6 @@
 ---
 title: "Troubles fonctionnels cervico-crâniens"
+seoTitle: "Ostéopathe nuque, mâchoire (ATM) et tête à Bayeux"
 shortTitle: "Tête, cou & mâchoire"
 icon: "jaw"
 description: "Ostéopathie des troubles fonctionnels cervico-crâniens à Bayeux : tensions de la nuque, de la mâchoire (ATM) et de la tête."

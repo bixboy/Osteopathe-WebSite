@@ -22,3 +22,6 @@ Format : date · décision · raison. Ajouter une ligne à chaque choix structur
 | 2026-10-25 | Une seule page anglaise (`/en`) plutôt qu'un site bilingue | Cible : patients anglophones ; header/footer restent en français ; extension possible via `Lang` |
 | 2026-10-25 | CSS intégré dans les pages (`inlineStylesheets: 'always'`) | Supprime les requêtes bloquantes, Lighthouse mobile 100 |
 | 2026-10-25 | `--color-accent-text` pour le texte cuivre | Contraste AA ; `--color-accent` réservé aux décors |
+| 2026-10-25 | Carrousels mobiles en CSS natif (scroll-snap), pas de librairie | 0 JS, glissement fluide natif, accessible au clavier et lecteur d'écran |
+| 2026-10-25 | Propriétés d'animation détaillées pour les scroll-driven animations | lightningcss fusionne `animation-timeline` dans le raccourci `animation`, refusé par Chrome |
+| 2026-10-25 | Hébergement OVH mutualisé via son intégration Git, branche `production` construite par une GitHub Action | OVH ne lance pas de build ; aucun identifiant FTP stocké sur GitHub ; historique continu pour que le pull d'OVH fonctionne |

@@ -1,9 +1,10 @@
 ---
 import { site } from '../data/site';
+import { link } from '../lib/paths';
 import { initials } from '../lib/format';
 ---
 
-<a class="logo" href="/">
+<a class="logo" href={link('/')}>
   <!-- TODO(phase 2): remplacer le monogramme par le logo de la cliente s'il existe -->
   <span class="logo__mark" aria-hidden="true">{initials(site.name)}</span>
   <span class="logo__text">

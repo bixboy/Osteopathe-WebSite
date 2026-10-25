@@ -19,7 +19,8 @@ const accessIcons = [Accessibility, Car];
 ---
 
 <BaseLayout
-  title="Infos pratiques"
+  title="Cabinet d’ostéopathie à Bayeux : adresse, horaires, tarif"
+  breadcrumbs={[{ name: 'Infos pratiques', path: '/infos-pratiques' }]}
   description={`Adresse, horaires, accès et tarifs du cabinet d’ostéopathie de ${site.name} à Bayeux.`}
 >
   <PageHeader
@@ -34,7 +35,7 @@ const accessIcons = [Accessibility, Car];
     <div class="container grid">
       <div class="panel">
         <h2>Coordonnées et horaires</h2>
-        <PracticalInfo />
+        <PracticalInfo price={false} />
       </div>
 
       <div class="panel">

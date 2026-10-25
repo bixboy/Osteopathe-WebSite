@@ -7,22 +7,32 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MobileBookingBar from '../components/MobileBookingBar.astro';
 import { ui, type Lang } from '../lib/i18n';
-import { businessSchema } from '../lib/schema';
+import { breadcrumbSchema, siteGraph } from '../lib/schema';
+import { link } from '../lib/paths';
 import { token } from '../lib/tokens';
 
 interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
-  /** JSON-LD spécifique à la page (FAQPage, etc.), en plus du schéma du cabinet. */
-  schema?: Record<string, unknown>;
+  /** Entités JSON-LD propres à la page (FAQPage, Service…), ajoutées au graphe commun. */
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  /** Fil d'Ariane hors accueil, ex. [{ name: 'Soins', path: '/soins' }] (JSON-LD BreadcrumbList). */
+  breadcrumbs?: { name: string; path: string }[];
   lang?: Lang;
   /** Chemin de la même page dans l'autre langue (ex. "/en" depuis l'accueil). */
   alternate?: string;
 }
 
-const { title, description, noindex, schema, lang = 'fr', alternate } = Astro.props;
-const schemas = [businessSchema(Astro.site!), ...(schema ? [schema] : [])];
+const { title, description, noindex, schema, breadcrumbs, lang = 'fr', alternate } = Astro.props;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    ...siteGraph(Astro.site!),
+    ...(breadcrumbs ? [breadcrumbSchema(breadcrumbs, Astro.site!)] : []),
+    ...(schema ? [schema].flat() : []),
+  ],
+};
 ---
 
 <!doctype html>
@@ -31,12 +41,12 @@ const schemas = [businessSchema(Astro.site!), ...(schema ? [schema] : [])];
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content={token('color-primary')} />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" href={link('/favicon.ico')} sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href={link('/favicon.svg')} />
+    <link rel="apple-touch-icon" href={link('/apple-touch-icon.png')} />
+    <link rel="sitemap" href={link('/sitemap-index.xml')} />
     <Seo title={title} description={description} noindex={noindex} lang={lang} alternate={alternate} />
-    {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <a class="skip-link" href="#contenu">{ui[lang].skipLink}</a>

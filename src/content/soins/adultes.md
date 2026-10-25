@@ -1,5 +1,6 @@
 ---
 title: "Ostéopathie pour les adultes"
+seoTitle: "Ostéopathe à Bayeux : dos, nuque et tensions"
 shortTitle: "Adultes"
 icon: "adult"
 description: "Ostéopathe à Bayeux pour les adultes : douleurs de dos, de nuque, tensions liées au travail ou au stress."

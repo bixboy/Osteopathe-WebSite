@@ -9,6 +9,7 @@ import SectionHeader from '../../components/SectionHeader.astro';
 import SoinGrid from '../../components/SoinGrid.astro';
 import SoinIcon from '../../components/SoinIcon.astro';
 import { getSoins } from '../../lib/content';
+import { serviceSchema } from '../../lib/schema';
 
 export const getStaticPaths = (async () => {
   const soins = await getSoins();
@@ -22,7 +23,15 @@ const { soin, others } = Astro.props;
 const { Content } = await render(soin);
 ---
 
-<BaseLayout title={soin.data.title} description={soin.data.description}>
+<BaseLayout
+  title={soin.data.seoTitle ?? soin.data.title}
+  description={soin.data.description}
+  breadcrumbs={[
+    { name: 'Soins', path: '/soins' },
+    { name: soin.data.shortTitle, path: `/soins/${soin.id}` },
+  ]}
+  schema={serviceSchema(soin, Astro.site!)}
+>
   <PageHeader eyebrow={soin.data.shortTitle} title={soin.data.title} lead={soin.data.summary}>
     <span slot="icon" class="icon"><SoinIcon name={soin.data.icon} size={32} /></span>
   </PageHeader>

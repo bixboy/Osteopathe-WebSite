@@ -79,8 +79,9 @@ Arborescence proposée :
 ## Phase 5 – Mise en ligne
 
 - [ ] Achat du domaine (au nom de la cliente) + `site` dans `astro.config.mjs`
-- [ ] Hébergement statique (Netlify ou Cloudflare Pages) branché sur GitHub, déploiement auto
-- [ ] HTTPS, redirection `www` / apex, en-têtes de sécurité
+- [x] Hébergement OVH via GitHub : Action + branche `production` (procédure : `docs/DEPLOIEMENT.md`)
+- [x] En-têtes de sécurité, redirection HTTPS, adresses propres (`public/.htaccess`)
+- [ ] 👤 Associer Git dans l'espace OVH, clé SSH sur GitHub, webhook, certificat SSL
 - [ ] Google Search Console + envoi du sitemap
 - [ ] 👤 Fiche Google Business Profile : lien vers le site, NAP identique à `site.ts`
 - [ ] Mettre à jour le lien « site web » sur Doctolib et les annuaires
@@ -98,3 +99,9 @@ Arborescence proposée :
 - [x] Page anglaise `/en` (patients anglophones), lien de langue dans le header, balises hreflang
 - [x] Badge « Ouvert / Fermé » (heure de Paris, calculé dans le navigateur)
 - [x] Audit Lighthouse mobile : 100 / 100 / 100 / 100 sur accueil, /en, soin, infos pratiques
+- [x] Passe mobile : carrousels (soins, avis), menu animé, frise des étapes, bandeau 2×2, barre RDV au défilement, retours tactiles
+- [x] Correctif : les animations au défilement ne s'appliquaient pas en production (minification)
+- [x] Aucun débordement horizontal à 360 et 390 px sur les 11 pages ; Lighthouse mobile 99-100 partout
+- [x] Déploiement préparé : GitHub Action → branche `production`, `.htaccess` Apache, hébergeur dans les mentions légales
+- [ ] 👤 Domaine définitif dans `astro.config.mjs`, puis étapes de `docs/DEPLOIEMENT.md`
+- [ ] 👤 Téléphone de l'hébergeur (LCEN) dans `site.legal.host.phone`

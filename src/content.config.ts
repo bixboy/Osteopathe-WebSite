@@ -8,6 +8,8 @@ const soins = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/soins' }),
   schema: z.object({
     title: z.string(),
+    /** Titre de l'onglet / de Google, mots-clés en premier (sinon : title). Suffixé du nom. */
+    seoTitle: z.string().max(55).optional(),
     /** Titre court pour les cartes et le menu. */
     shortTitle: z.string(),
     /** Clé d'icône, voir src/lib/icons.ts. */
