@@ -1,0 +1,93 @@
+---
+import { Phone } from '@lucide/astro';
+import { site } from '../data/site';
+import { phoneHref } from '../lib/format';
+import BookingButton from './BookingButton.astro';
+
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<!--
+  Barre de prise de RDV fixée en bas de l'écran, sur mobile uniquement.
+-->
+<div class="bar">
+  <BookingButton label={label} />
+  {
+    site.contact.phone && (
+      <a class="bar__phone" href={phoneHref(site.contact.phone)} aria-label={`Appeler le ${site.contact.phone}`}>
+        <Phone size={20} aria-hidden="true" />
+      </a>
+    )
+  }
+</div>
+
+<style>
+  .bar {
+    position: fixed;
+    z-index: 40;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--gutter) calc(var(--space-2) + env(safe-area-inset-bottom));
+    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .bar > :global(:first-child) {
+    flex: 1;
+  }
+
+  .bar__phone {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 3.25rem;
+    border: 1.5px solid var(--color-primary);
+    border-radius: var(--radius-pill);
+    color: var(--color-primary);
+  }
+
+  /*
+   * Apparition au défilement (le haut de page a déjà son bouton RDV) : la barre glisse depuis
+   * le bas pendant les 30 premiers % d'écran défilés. Sans support ou mouvement réduit : toujours visible.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+      .bar {
+        animation-name: bar-in;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: scroll(root);
+        animation-range: 0 30vh;
+      }
+    }
+  }
+
+  @keyframes bar-in {
+    from {
+      translate: 0 110%;
+    }
+  }
+
+  /* Place réservée pour que la barre ne masque pas le bas du footer */
+  :global(body) {
+    padding-bottom: 4.5rem;
+  }
+
+  @media (min-width: 64rem) {
+    .bar {
+      display: none;
+    }
+
+    :global(body) {
+      padding-bottom: 0;
+    }
+  }
+</style>

@@ -1,0 +1,137 @@
+---
+import { Clock, CreditCard, Languages, MapPin, Phone } from '@lucide/astro';
+import { site } from '../data/site';
+import { formatList, formatOpeningHours, phoneHref } from '../lib/format';
+import { toEnglish, type Lang } from '../lib/i18n';
+import OpenStatus from './OpenStatus.astro';
+
+interface Props {
+  /** Masque paiement et langues (version courte pour le hero et la sidebar). */
+  compact?: boolean;
+  lang?: Lang;
+}
+
+const { compact = false, lang = 'fr' } = Astro.props;
+const { address, contact } = site;
+
+const t = {
+  fr: {
+    address: 'Adresse',
+    mapLink: '(voir sur la carte, nouvel onglet)',
+    hours: 'Horaires',
+    phone: 'Téléphone',
+    payment: 'Paiement',
+    paymentText: site.payment.join(' · '),
+    languages: 'Langues',
+    languagesText: `Consultations en ${formatList(site.languages)}`,
+  },
+  en: {
+    address: 'Address',
+    mapLink: '(view on map, new tab)',
+    hours: 'Opening hours',
+    phone: 'Phone',
+    payment: 'Payment',
+    paymentText: `Payment by ${formatList(site.payment.map(toEnglish), 'en')}`,
+    languages: 'Languages',
+    languagesText: `Consultations in ${formatList(site.languages.map(toEnglish), 'en')}`,
+  },
+}[lang];
+---
+
+<dl class="info">
+  <div class="info__row">
+    <dt><MapPin size={20} aria-hidden="true" /><span class="visually-hidden">{t.address}</span></dt>
+    <dd>
+      <a href={site.google.mapsUrl} target="_blank" rel="noopener">
+        {address.street}, {address.postalCode} {address.city}
+        <span class="visually-hidden">{t.mapLink}</span>
+      </a>
+      <small>
+        {address.building}
+        <!-- Précisions d'accès rédigées en français uniquement -->
+        {lang === 'fr' && ` · ${address.access.join(', ').toLowerCase()}`}
+      </small>
+    </dd>
+  </div>
+
+  <div class="info__row">
+    <dt><Clock size={20} aria-hidden="true" /><span class="visually-hidden">{t.hours}</span></dt>
+    <dd>
+      {formatOpeningHours(site.openingHours, lang).map((line) => <span>{line}</span>)}
+      <OpenStatus lang={lang} />
+    </dd>
+  </div>
+
+  {
+    contact.phone && (
+      <div class="info__row">
+        <dt><Phone size={20} aria-hidden="true" /><span class="visually-hidden">{t.phone}</span></dt>
+        <dd><a href={phoneHref(contact.phone)}>{contact.phone}</a></dd>
+      </div>
+    )
+  }
+
+  {
+    !compact && (
+      <>
+        <div class="info__row">
+          <dt><CreditCard size={20} aria-hidden="true" /><span class="visually-hidden">{t.payment}</span></dt>
+          <dd>{t.paymentText}</dd>
+        </div>
+        <div class="info__row">
+          <dt><Languages size={20} aria-hidden="true" /><span class="visually-hidden">{t.languages}</span></dt>
+          <dd>{t.languagesText}</dd>
+        </div>
+      </>
+    )
+  }
+</dl>
+
+<style>
+  .info {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+  }
+
+  .info__row {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    align-items: start;
+    gap: var(--space-3);
+  }
+
+  dt {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+  }
+
+  dd {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 2.5rem;
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  dd a {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  dd :global([data-open-status]) {
+    margin-top: var(--space-2);
+  }
+
+  small {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+  }
+</style>

@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import SoinGrid from '../../components/SoinGrid.astro';
+import { getSoins } from '../../lib/content';
+
+const soins = await getSoins();
+---
+
+<BaseLayout
+  title="Soins"
+  description="Ostéopathie à Bayeux pour les nourrissons, les femmes enceintes, les sportifs et les adultes."
+>
+  <PageHeader
+    eyebrow="Soins"
+    title="Pour qui consulter ?"
+    lead="Du nourrisson à l’adulte, chaque prise en charge est adaptée à l’âge, à l’histoire et aux besoins de chacun."
+  />
+
+  <section class="section" aria-label="Liste des soins">
+    <div class="container">
+      <SoinGrid soins={soins} />
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

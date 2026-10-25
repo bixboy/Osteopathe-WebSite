@@ -1,0 +1,83 @@
+---
+interface Props {
+  /** Largeur minimale d'une carte en grille (tablette / ordinateur). */
+  min?: string;
+  /** Largeur maximale d'une carte en grille : une ligne incomplète reste centrée. */
+  max?: string;
+  class?: string;
+}
+
+const { min = '15rem', max = '20rem', class: className } = Astro.props;
+---
+
+<!--
+  Liste de cartes : grille centrée sur grand écran, carrousel horizontal sur mobile
+  (défilement natif + aimantation, sans JavaScript). Les enfants doivent être des <li>.
+-->
+<ul class:list={['carousel', className]} style={`--item-min: ${min}; --item-max: ${max};`}>
+  <slot />
+</ul>
+
+<style>
+  .carousel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .carousel > :global(*) {
+    flex: 1 1 var(--item-min);
+    max-width: var(--item-max);
+  }
+
+  @media (max-width: 47.99rem) {
+    .carousel {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      gap: var(--space-3);
+      /* Le carrousel déborde jusqu'aux bords de l'écran */
+      margin-inline: calc(-1 * var(--gutter));
+      padding: var(--space-1) var(--gutter) var(--space-3);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--gutter);
+      scrollbar-width: none;
+    }
+
+    .carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* 82 % : la carte suivante dépasse, ce qui invite à faire glisser */
+    .carousel > :global(*) {
+      flex: 0 0 82%;
+      max-width: none;
+      scroll-snap-align: start;
+    }
+
+    /* Les cartes grossissent en entrant dans le carrousel au fil du glissement */
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: view(inline)) {
+        .carousel > :global(*) {
+          animation-name: carousel-in;
+          animation-timing-function: linear;
+          animation-fill-mode: both;
+          animation-timeline: view(inline);
+          animation-range: entry 0% entry 100%;
+        }
+      }
+    }
+  }
+
+  /* Échelle seulement : estomper le texte réduirait son contraste (accessibilité) */
+  @keyframes carousel-in {
+    from {
+      scale: 0.9;
+    }
+  }
+</style>

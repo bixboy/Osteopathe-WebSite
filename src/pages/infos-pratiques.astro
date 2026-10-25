@@ -1,0 +1,207 @@
+---
+import { Image } from 'astro:assets';
+import { Accessibility, BuildingComplex, Car, CreditCard, Euro } from '@lucide/astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookingButton from '../components/BookingButton.astro';
+import Button from '../components/Button.astro';
+import PageHeader from '../components/PageHeader.astro';
+import GoogleMap from '../components/GoogleMap.astro';
+import PracticalInfo from '../components/PracticalInfo.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import { site } from '../data/site';
+import { formatPrice } from '../lib/format';
+import batiment from '../assets/images/cabinet-batiment.webp';
+import entree from '../assets/images/cabinet-entree.webp';
+
+const { address } = site;
+// Icône par info d'accès, dans l'ordre de site.address.access
+const accessIcons = [Accessibility, Car];
+---
+
+<BaseLayout
+  title="Infos pratiques"
+  description={`Adresse, horaires, accès et tarifs du cabinet d’ostéopathie de ${site.name} à Bayeux.`}
+>
+  <PageHeader
+    eyebrow="Infos pratiques"
+    title="Venir au cabinet"
+    lead={`Adresse, horaires, accès et tarifs du cabinet d’ostéopathie de ${address.city}.`}
+  >
+    <BookingButton />
+  </PageHeader>
+
+  <section class="section">
+    <div class="container grid">
+      <div class="panel">
+        <h2>Coordonnées et horaires</h2>
+        <PracticalInfo />
+      </div>
+
+      <div class="panel">
+        <h2>Accès</h2>
+        <ul class="features">
+          <li><BuildingComplex size={20} aria-hidden="true" />{address.building}</li>
+          {
+            address.access.map((item, index) => {
+              const Icon = accessIcons[index] ?? BuildingComplex;
+              return (
+                <li>
+                  <Icon size={20} aria-hidden="true" />
+                  {item}
+                </li>
+              );
+            })
+          }
+        </ul>
+        <Button href={site.google.mapsUrl} variant="secondary" size="sm" external>
+          Itinéraire sur Google Maps
+        </Button>
+      </div>
+
+      <div class="panel">
+        <h2>Tarifs</h2>
+        <ul class="prices">
+          {
+            site.prices.map(({ label, detail, amount }) => (
+              <li>
+                <span class="prices__label">
+                  <Euro size={20} aria-hidden="true" />
+                  {label}
+                </span>
+                <strong class="prices__amount">{formatPrice(amount)}</strong>
+                <small>{detail}</small>
+              </li>
+            ))
+          }
+        </ul>
+        <ul class="features">
+          <li><CreditCard size={20} aria-hidden="true" />{site.payment.join(' · ')}</li>
+        </ul>
+        <p class="note">
+          Consultation non remboursée par l’Assurance Maladie{!site.acceptsCarteVitale && ', carte Vitale non acceptée'}.
+          De nombreuses mutuelles prennent en charge tout ou partie des séances.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="carte-titre">
+    <div class="container stack">
+      <SectionHeader
+        id="carte-titre"
+        eyebrow="Plan d’accès"
+        title="Trouver le cabinet"
+        lead={`Le cabinet se trouve dans le ${address.building}.`}
+      />
+      <div class="photos reveal-children">
+        <figure>
+          <Image src={batiment} alt={`Façade du ${address.building}`} widths={[480, batiment.width]} sizes="(min-width: 48rem) 60vw, 100vw" />
+          <figcaption>Le bâtiment, vu depuis la rue</figcaption>
+        </figure>
+        <figure>
+          <Image src={entree} alt={`Entrée du ${address.building}`} widths={[320, entree.width]} sizes="(min-width: 48rem) 35vw, 100vw" />
+          <figcaption>L’entrée du centre</figcaption>
+        </figure>
+      </div>
+      <GoogleMap />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+  }
+
+  .features,
+  .prices {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+  }
+
+  .features li,
+  .prices__label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .features :global(svg),
+  .prices :global(svg) {
+    flex-shrink: 0;
+    color: var(--color-primary);
+  }
+
+  .prices li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
+  }
+
+  .prices__amount {
+    font-family: var(--font-heading);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-heading);
+    color: var(--color-primary);
+  }
+
+  .prices small {
+    grid-column: 1 / -1;
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+  }
+
+  .note {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .photos {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 48rem) {
+    .photos {
+      grid-template-columns: 1.7fr 1fr;
+    }
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  figure :global(img) {
+    width: 100%;
+    height: 22rem;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+
+  figcaption {
+    margin-top: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+</style>

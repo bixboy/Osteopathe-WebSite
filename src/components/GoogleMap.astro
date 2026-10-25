@@ -1,0 +1,104 @@
+---
+import { MapPin } from '@lucide/astro';
+import Button from './Button.astro';
+import { site } from '../data/site';
+---
+
+<!--
+  Carte Google Maps chargée uniquement au clic (RGPD) : l'iframe dépose des cookies Google,
+  elle ne doit pas se charger sans action de l'utilisateur. Sans JS, le lien reste utilisable.
+-->
+<div class="map" data-google-map={site.google.embedUrl}>
+  <div class="map__consent">
+    <span class="map__icon"><MapPin size={28} aria-hidden="true" /></span>
+    <p class="map__title">Carte Google Maps</p>
+    <p class="map__text">
+      L’affichage de la carte charge des contenus de Google, susceptible de déposer des cookies.{' '}
+      <a href="/confidentialite">En savoir plus</a>
+    </p>
+    <div class="map__actions">
+      <Button size="sm" data-map-load>Afficher la carte</Button>
+      <Button href={site.google.mapsUrl} variant="secondary" size="sm" external>
+        Ouvrir dans Google Maps
+      </Button>
+    </div>
+  </div>
+</div>
+
+<script>
+  for (const map of document.querySelectorAll<HTMLElement>('[data-google-map]')) {
+    map.querySelector('[data-map-load]')?.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = map.dataset.googleMap ?? '';
+      iframe.title = 'Carte Google Maps du cabinet';
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = 'no-referrer-when-downgrade';
+      map.replaceChildren(iframe);
+    });
+  }
+</script>
+
+<style>
+  .map {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 24rem;
+    overflow: hidden;
+    border-radius: var(--radius);
+    /* Fond évoquant un plan, sans requête vers Google */
+    background:
+      repeating-linear-gradient(35deg, transparent 0 58px, var(--color-bg) 58px 61px),
+      repeating-linear-gradient(-55deg, transparent 0 84px, var(--color-bg) 84px 86px),
+      var(--color-primary-soft);
+  }
+
+  .map :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .map__consent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    max-width: 26rem;
+    margin: var(--space-4);
+    padding: var(--space-5) var(--space-4);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+
+  .map__icon {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+  }
+
+  .map__title {
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+  }
+
+  .map__text {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .map__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+</style>

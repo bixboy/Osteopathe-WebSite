@@ -1,0 +1,16 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Carousel from './Carousel.astro';
+import SoinCard from './SoinCard.astro';
+
+interface Props {
+  soins: CollectionEntry<'soins'>[];
+}
+
+const { soins } = Astro.props;
+---
+
+<!-- Grille centrée sur grand écran, carrousel sur mobile -->
+<Carousel class="reveal-children" min="12rem" max="20rem">
+  {soins.map((soin) => <li><SoinCard soin={soin} /></li>)}
+</Carousel>

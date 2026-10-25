@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { site } from '../data/site';
+
+const { legal, address } = site;
+---
+
+<BaseLayout title="Mentions légales" noindex>
+  <PageHeader title="Mentions légales" />
+
+  <section class="section">
+    <div class="container prose">
+      <!-- TODO(phase 4): compléter avec docs/SEO.md § Mentions obligatoires -->
+      <h2>Éditeur</h2>
+      <p>
+        {site.name}, {site.profession}<br />
+        {address.street}, {address.postalCode} {address.city}<br />
+        SIRET : {legal.siret || 'à compléter'}<br />
+        N° ADELI / RPPS : {legal.rppsOrAdeli || 'à compléter'}
+      </p>
+      <h2>Hébergeur</h2>
+      <p>{legal.host.name || 'à compléter'}</p>
+    </div>
+  </section>
+</BaseLayout>

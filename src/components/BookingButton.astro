@@ -1,0 +1,21 @@
+---
+import { CalendarCheck } from '@lucide/astro';
+import Button from './Button.astro';
+import { site } from '../data/site';
+
+interface Props {
+  variant?: 'primary' | 'secondary' | 'light';
+  size?: 'md' | 'sm';
+  /** Libellé court pour les espaces réduits (header). */
+  short?: boolean;
+  /** Libellé personnalisé (ex. page en anglais). */
+  label?: string;
+}
+
+const { variant = 'primary', size = 'md', short = false, label } = Astro.props;
+---
+
+<Button href={site.booking.url} variant={variant} size={size} external>
+  <CalendarCheck size={18} aria-hidden="true" />
+  {label ?? (short ? 'Prendre RDV' : site.booking.label)}
+</Button>

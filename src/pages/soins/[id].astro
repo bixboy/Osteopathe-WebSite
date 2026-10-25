@@ -1,0 +1,89 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookingButton from '../../components/BookingButton.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import PracticalInfo from '../../components/PracticalInfo.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import SoinGrid from '../../components/SoinGrid.astro';
+import SoinIcon from '../../components/SoinIcon.astro';
+import { getSoins } from '../../lib/content';
+
+export const getStaticPaths = (async () => {
+  const soins = await getSoins();
+  return soins.map((soin) => ({
+    params: { id: soin.id },
+    props: { soin, others: soins.filter((other) => other.id !== soin.id) },
+  }));
+}) satisfies GetStaticPaths;
+
+const { soin, others } = Astro.props;
+const { Content } = await render(soin);
+---
+
+<BaseLayout title={soin.data.title} description={soin.data.description}>
+  <PageHeader eyebrow={soin.data.shortTitle} title={soin.data.title} lead={soin.data.summary}>
+    <span slot="icon" class="icon"><SoinIcon name={soin.data.icon} size={32} /></span>
+  </PageHeader>
+
+  <div class="section container layout">
+    <article class="prose">
+      <Content />
+    </article>
+
+    <aside class="aside" aria-label="Prendre rendez-vous">
+      <p class="aside__title">Prendre rendez-vous</p>
+      <PracticalInfo compact />
+      <BookingButton size="sm" short />
+    </aside>
+  </div>
+
+  <section class="section section--alt" aria-labelledby="autres-titre">
+    <div class="container">
+      <SectionHeader id="autres-titre" eyebrow="Découvrir aussi" title="Les autres consultations" />
+      <SoinGrid soins={others} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .icon {
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    color: var(--color-primary);
+  }
+
+  .layout {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  @media (min-width: 60rem) {
+    .layout {
+      grid-template-columns: 1fr 22rem;
+    }
+  }
+
+  .aside {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .aside__title {
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+  }
+</style>

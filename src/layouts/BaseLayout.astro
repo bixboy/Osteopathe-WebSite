@@ -1,0 +1,50 @@
+---
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBookingBar from '../components/MobileBookingBar.astro';
+import { ui, type Lang } from '../lib/i18n';
+import { businessSchema } from '../lib/schema';
+import { token } from '../lib/tokens';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  /** JSON-LD spécifique à la page (FAQPage, etc.), en plus du schéma du cabinet. */
+  schema?: Record<string, unknown>;
+  lang?: Lang;
+  /** Chemin de la même page dans l'autre langue (ex. "/en" depuis l'accueil). */
+  alternate?: string;
+}
+
+const { title, description, noindex, schema, lang = 'fr', alternate } = Astro.props;
+const schemas = [businessSchema(Astro.site!), ...(schema ? [schema] : [])];
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content={token('color-primary')} />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <Seo title={title} description={description} noindex={noindex} lang={lang} alternate={alternate} />
+    {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">{ui[lang].skipLink}</a>
+    <Header lang={lang} />
+    <main id="contenu">
+      <slot />
+    </main>
+    <Footer />
+    <MobileBookingBar label={ui[lang].bookShort} />
+  </body>
+</html>

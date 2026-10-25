@@ -1,0 +1,175 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookingButton from '../components/BookingButton.astro';
+import Button from '../components/Button.astro';
+import CtaBand from '../components/CtaBand.astro';
+import PageHeader from '../components/PageHeader.astro';
+import PracticalInfo from '../components/PracticalInfo.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import SessionSteps from '../components/SessionSteps.astro';
+import SoinIcon from '../components/SoinIcon.astro';
+import { site } from '../data/site';
+import { seanceStepsEn } from '../data/seance';
+import { getSoins } from '../lib/content';
+import { formatPrice } from '../lib/format';
+
+/**
+ * Seule page en anglais du site (patients anglophones, touristes, résidents britanniques).
+ * Faits issus de site.ts ; soins listés via leur champ `en` (src/content/soins/*.md).
+ */
+const soins = (await getSoins()).filter((soin) => soin.data.en);
+const { address } = site;
+const bookLabel = 'Book an appointment on Doctolib';
+---
+
+<BaseLayout
+  lang="en"
+  alternate="/"
+  title="English-speaking osteopath"
+  description={`${site.name}, osteopath (D.O.) in ${address.city}, Normandy. Consultations in English for babies, children, pregnant women, athletes and adults. Book online.`}
+>
+  <PageHeader
+    eyebrow={`Osteopath D.O. · ${address.city}`}
+    title={`An English-speaking osteopath in ${address.city}`}
+    lead={`${site.name} is an osteopath (D.O.) in ${address.city}, Normandy. Consultations are available in English.`}
+  >
+    <BookingButton label={bookLabel} />
+  </PageHeader>
+
+  <section class="section" aria-labelledby="who-title">
+    <div class="container">
+      <SectionHeader id="who-title" eyebrow="Who I see" title="Osteopathy for every stage of life" />
+      <ul class="who reveal-children">
+        {
+          soins.map(({ data }) => (
+            <li class="who__item">
+              <span class="who__icon">
+                <SoinIcon name={data.icon} size={24} />
+              </span>
+              <div>
+                <h3>{data.en!.title}</h3>
+                <p>{data.en!.summary}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="session-title">
+    <div class="container">
+      <SectionHeader id="session-title" eyebrow="Your appointment" title="What to expect" />
+      <SessionSteps steps={seanceStepsEn} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="practical-title">
+    <div class="container practical">
+      <div class="practical__info">
+        <SectionHeader id="practical-title" eyebrow="Practical information" title="Visiting the practice" />
+        <PracticalInfo lang="en" />
+        <Button href={site.google.mapsUrl} variant="secondary" size="sm" external>Open in Google Maps</Button>
+      </div>
+
+      <div class="good-to-know">
+        <h3>Good to know</h3>
+        <ul>
+          <li>
+            A session costs {formatPrice(site.prices[0].amount, 'en')}, whether it is your first visit or a
+            follow-up, for adults, children, babies, pregnant women and athletes alike.
+          </li>
+          <li>No referral or prescription is needed to see an osteopath in France.</li>
+          <li>
+            For babies under 6 months, French law requires a doctor’s certificate confirming there is
+            no contraindication.
+          </li>
+          <li>
+            Osteopathy is not covered by the French national health insurance (Assurance Maladie), but
+            many top-up insurers (mutuelles) reimburse part or all of the session. Check with yours.
+            {!site.acceptsCarteVitale && 'The Carte Vitale is not accepted.'}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Book your appointment online"
+    text="Choose a time that suits you directly on Doctolib."
+    bookLabel={bookLabel}
+  />
+</BaseLayout>
+
+<style>
+  .who {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .who__item {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .who__icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+  }
+
+  .who__item p {
+    margin-top: var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .practical {
+    display: grid;
+    gap: var(--space-5);
+    align-items: start;
+  }
+
+  @media (min-width: 56rem) {
+    .practical {
+      grid-template-columns: 1.2fr 1fr;
+    }
+  }
+
+  .practical__info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .practical :global(.section-header) {
+    margin-bottom: 0;
+  }
+
+  .good-to-know {
+    padding: var(--space-5) var(--space-4);
+    border-radius: var(--radius);
+    background: var(--color-sand);
+  }
+
+  .good-to-know ul {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-3) 0 0;
+    padding-left: var(--space-4);
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+import { Star } from '@lucide/astro';
+import { formatRating } from '../lib/format';
+
+interface Props {
+  rating: number;
+  size?: number;
+}
+
+const { rating, size = 18 } = Astro.props;
+const stars = [1, 2, 3, 4, 5];
+---
+
+<!-- Deux rangées d'étoiles superposées : la pleine est rognée au pourcentage de la note -->
+<span
+  class="stars"
+  role="img"
+  aria-label={`Note : ${formatRating(rating)} sur 5`}
+  style={`--rating: ${(rating / 5) * 100}%`}
+>
+  <span class="stars__row">{stars.map(() => <Star size={size} aria-hidden="true" />)}</span>
+  <span class="stars__row stars__row--full">
+    {stars.map(() => <Star size={size} fill="currentColor" aria-hidden="true" />)}
+  </span>
+</span>
+
+<style>
+  .stars {
+    position: relative;
+    display: inline-flex;
+    color: var(--color-star);
+  }
+
+  .stars__row {
+    display: inline-flex;
+    gap: 2px;
+  }
+
+  .stars__row--full {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--rating);
+    overflow: hidden;
+  }
+</style>

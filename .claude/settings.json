@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev)",
+      "Bash(npm run check)",
+      "Bash(npm run build)",
+      "Bash(npm run preview)",
+      "Bash(npx astro check)",
+      "Bash(npx astro build)",
+      "Bash(npx astro dev *)",
+      "Bash(npx astro sync)"
+    ],
+    "deny": [
+      "Read(./node_modules/**)",
+      "Read(./dist/**)",
+      "Read(./.astro/**)",
+      "Read(./package-lock.json)"
+    ]
+  }
+}

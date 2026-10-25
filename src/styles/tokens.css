@@ -1,0 +1,67 @@
+/*
+ * Design tokens : SEULE source des couleurs, typos, espacements.
+ * Les composants n'utilisent que var(--...), jamais de valeur en dur.
+ * Ambiance : sauge, sable, crème — voir docs/DESIGN.md.
+ */
+:root {
+  /* Couleurs */
+  --color-bg: #f8f5ef;
+  --color-surface: #ffffff;
+  --color-surface-alt: #eef2ec;
+  --color-sand: #efe5d5;
+  --color-text: #22302b;
+  --color-text-muted: #5a6964;
+  --color-primary: #3f6b5c;
+  --color-primary-hover: #30574a;
+  --color-primary-soft: #dfe9e3;
+  --color-on-primary: #ffffff;
+  --color-accent: #b98d5a;
+  /* Variante foncée pour le texte : contraste AA (≥ 4.5:1) sur tous les fonds */
+  --color-accent-text: #875f34;
+  --color-border: #e5dfd3;
+  --color-focus: #1d5fd1;
+  --color-star: #d29a2e;
+  --color-footer-bg: #22302b;
+  --color-footer-text: #d7ddd9;
+
+  /* Typographie */
+  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+  --text-xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  --text-2xl: clamp(1.875rem, 1.5rem + 1.6vw, 2.75rem);
+  --text-3xl: clamp(2.25rem, 1.6rem + 3vw, 4rem);
+  --leading: 1.7;
+  --leading-tight: 1.15;
+  --weight-heading: 500;
+
+  /* Espacements */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+  --space-7: clamp(4rem, 3rem + 5vw, 7rem);
+
+  /* Mise en page */
+  --container: 72rem;
+  --container-text: 42rem;
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2rem);
+  --header-height: 4.5rem;
+  --radius-sm: 0.5rem;
+  --radius: 1rem;
+  --radius-lg: 2rem;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgb(34 48 43 / 0.06);
+  --shadow: 0 2px 4px rgb(34 48 43 / 0.04), 0 12px 32px rgb(34 48 43 / 0.08);
+
+  /* Mouvement */
+  --transition: 180ms ease;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-enter: 800ms;
+  --reveal-distance: 1.5rem;
+}

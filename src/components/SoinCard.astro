@@ -1,0 +1,108 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { ArrowRight } from '@lucide/astro';
+import SoinIcon from './SoinIcon.astro';
+
+interface Props {
+  soin: CollectionEntry<'soins'>;
+}
+
+const { id, data } = Astro.props.soin;
+---
+
+<article class="card">
+  <span class="card__icon"><SoinIcon name={data.icon} size={28} /></span>
+  <h3 class="card__title">
+    <!-- Le lien couvre toute la carte via ::after -->
+    <a href={`/soins/${id}`}>{data.shortTitle}</a>
+  </h3>
+  <p>{data.summary}</p>
+  <span class="card__more" aria-hidden="true">En savoir plus <ArrowRight size={16} /></span>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    height: 100%;
+    padding: var(--space-5) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    transition:
+      transform var(--transition),
+      box-shadow var(--transition),
+      border-color var(--transition);
+  }
+
+
+  .card__icon {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    transition:
+      background-color var(--transition),
+      color var(--transition),
+      transform 400ms var(--ease-out);
+  }
+
+  .card__more :global(svg) {
+    transition: translate var(--transition);
+  }
+
+  /* Effets de survol réservés à la souris ; au toucher : léger enfoncement */
+  @media (hover: hover) {
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: transparent;
+      box-shadow: var(--shadow);
+    }
+
+    .card:hover .card__icon {
+      background: var(--color-primary);
+      color: var(--color-on-primary);
+      transform: rotate(-8deg) scale(1.06);
+    }
+
+    .card:hover .card__more :global(svg) {
+      translate: 4px 0;
+    }
+  }
+
+  .card:active {
+    transform: scale(0.98);
+  }
+
+  .card__title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .card__title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+  }
+
+  .card p {
+    flex-grow: 1;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .card__more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-primary);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+</style>

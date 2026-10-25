@@ -1,0 +1,304 @@
+---
+import { ArrowRight, Menu, X } from '@lucide/astro';
+import { mainNav } from '../data/navigation';
+import BookingButton from './BookingButton.astro';
+import Logo from './Logo.astro';
+import OpenStatus from './OpenStatus.astro';
+import { ui, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'fr' } = Astro.props;
+// Lien vers l'autre langue : seule la page /en existe en anglais
+const switcher = lang === 'en'
+  ? { href: '/', label: 'Français', lang: 'fr' }
+  : { href: '/en', label: 'English', lang: 'en' };
+
+const current = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? current === '/' : current.startsWith(href));
+---
+
+<header class="header">
+  <div class="container header__inner">
+    <Logo />
+
+    <!-- Menu mobile via l'API Popover : natif, accessible (Échap, focus), sans JavaScript -->
+    <button class="header__toggle" popovertarget="menu" aria-label="Ouvrir le menu">
+      <Menu size={26} aria-hidden="true" />
+    </button>
+
+    <nav id="menu" class="nav" popover aria-label="Menu principal">
+      <!-- Mobile : même hauteur que le header, le logo ne bouge pas à l'ouverture -->
+      <div class="nav__top">
+        <Logo />
+        <button class="nav__close" popovertarget="menu" popovertargetaction="hide" aria-label="Fermer le menu">
+          <X size={26} aria-hidden="true" />
+        </button>
+      </div>
+
+      <ul class="nav__list">
+        {
+          mainNav.map(({ label, href }, index) => (
+            <li style={`--i: ${index}`}>
+              <a class="nav__link" href={href} aria-current={isActive(href) ? 'page' : undefined}>
+                {label}
+                <ArrowRight class="nav__arrow" size={20} aria-hidden="true" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="nav__footer">
+        <div class="nav__status"><OpenStatus lang={lang} /></div>
+        <a class="nav__lang" href={switcher.href} hreflang={switcher.lang} lang={switcher.lang}>
+          {switcher.label}
+        </a>
+        <BookingButton size="sm" label={ui[lang].bookShort} />
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .header {
+      animation-name: header-raise;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll();
+      animation-range: 0 8rem;
+    }
+  }
+
+  @keyframes header-raise {
+    to {
+      border-bottom-color: transparent;
+      box-shadow: var(--shadow);
+    }
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: var(--header-height);
+  }
+
+  .header__toggle,
+  .nav__close {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-text);
+    cursor: pointer;
+  }
+
+  .nav__lang {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .nav__lang:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .nav__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav__link {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .nav__link[aria-current='page'] {
+    color: var(--color-primary);
+  }
+
+  /* ---------- Mobile et tablette : panneau plein écran ---------- */
+  @media (max-width: 63.99rem) {
+    .nav:popover-open {
+      display: flex;
+      flex-direction: column;
+      inset: 0;
+      width: 100%;
+      max-width: none;
+      height: 100dvh;
+      max-height: none;
+      margin: 0;
+      padding: 0 var(--gutter) calc(var(--space-4) + env(safe-area-inset-bottom));
+      overflow-y: auto;
+      border: 0;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+
+    /* Page figée derrière le menu ouvert */
+    :global(html:has(.nav:popover-open)) {
+      overflow: hidden;
+    }
+
+    .nav__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: var(--header-height);
+      margin-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav__list li {
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav__link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-block: var(--space-3);
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+    }
+
+    .nav__link :global(.nav__arrow) {
+      color: var(--color-accent-text);
+      transition: translate var(--transition);
+    }
+
+    .nav__link:active :global(.nav__arrow) {
+      translate: 0.25rem 0;
+    }
+
+    .nav__footer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-3);
+      margin-top: auto;
+      padding-top: var(--space-5);
+    }
+
+    .nav__footer > :global(.btn) {
+      width: 100%;
+    }
+
+    /* Ouverture : fondu + glissement, puis liens en cascade */
+    @media (prefers-reduced-motion: no-preference) {
+      .nav {
+        opacity: 0;
+        translate: 0 -0.75rem;
+        transition:
+          opacity 250ms ease,
+          translate 350ms var(--ease-out),
+          display 350ms allow-discrete,
+          overlay 350ms allow-discrete;
+      }
+
+      .nav:popover-open {
+        opacity: 1;
+        translate: 0 0;
+      }
+
+      @starting-style {
+        .nav:popover-open {
+          opacity: 0;
+          translate: 0 -0.75rem;
+        }
+      }
+
+      .nav:popover-open .nav__list li {
+        animation: fade-up 500ms var(--ease-out) both;
+        animation-delay: calc(100ms + var(--i) * 60ms);
+      }
+
+      .nav:popover-open .nav__footer {
+        animation: fade-up 500ms var(--ease-out) 450ms both;
+      }
+    }
+  }
+
+  /* ---------- Desktop : menu toujours visible en ligne ---------- */
+  @media (min-width: 64rem) {
+    .header__toggle,
+    .nav__top,
+    .nav__status,
+    .nav__link :global(.nav__arrow) {
+      display: none;
+    }
+
+    .nav {
+      position: static;
+      display: flex;
+      align-items: center;
+      gap: var(--space-5);
+      width: auto;
+      height: auto;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      border: 0;
+      background: none;
+      color: inherit;
+    }
+
+    /* Langue et bouton RDV s'alignent directement dans la barre */
+    .nav__footer {
+      display: contents;
+    }
+
+    .nav__list {
+      display: flex;
+      gap: var(--space-4);
+    }
+
+    .nav__link {
+      position: relative;
+      font-size: var(--text-sm);
+      font-weight: 500;
+    }
+
+    .nav__link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -0.35rem;
+      height: 2px;
+      border-radius: var(--radius-pill);
+      background: var(--color-accent);
+      transform: scaleX(0);
+      transition: transform var(--transition);
+    }
+
+    .nav__link:hover::after,
+    .nav__link[aria-current='page']::after {
+      transform: scaleX(1);
+    }
+  }
+</style>

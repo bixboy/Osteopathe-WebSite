@@ -1,0 +1,138 @@
+---
+import { site } from '../data/site';
+import type { Lang } from '../lib/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'fr' } = Astro.props;
+---
+
+<!--
+  « Ouvert · jusqu'à 12h » / « Fermé · ouvre lundi à 9h », calculé dans le navigateur à l'heure
+  de Paris (l'heure change après le build). Sans JavaScript : reste masqué.
+  Ne connaît pas les jours fériés ni les congés : uniquement les horaires de site.ts.
+-->
+<span class="status" data-open-status data-hours={JSON.stringify(site.openingHours)} data-lang={lang} hidden>
+</span>
+
+<script>
+  import type { Day, OpeningSlot } from '../data/site';
+  import { dayName, formatTime } from '../lib/format';
+  import type { Lang } from '../lib/i18n';
+
+  const WEEK: Day[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  const labels = {
+    fr: {
+      open: (closes: string) => `Ouvert · jusqu’à ${closes}`,
+      today: (opens: string) => `Fermé · ouvre à ${opens}`,
+      tomorrow: (opens: string) => `Fermé · ouvre demain à ${opens}`,
+      later: (day: string, opens: string) => `Fermé · ouvre ${day.toLowerCase()} à ${opens}`,
+    },
+    en: {
+      open: (closes: string) => `Open · until ${closes}`,
+      today: (opens: string) => `Closed · opens at ${opens}`,
+      tomorrow: (opens: string) => `Closed · opens tomorrow at ${opens}`,
+      later: (day: string, opens: string) => `Closed · opens ${day} at ${opens}`,
+    },
+  } satisfies Record<Lang, unknown>;
+
+  const toMinutes = (time: string) => {
+    const [h, m] = time.split(':').map(Number);
+    return h * 60 + m;
+  };
+
+  /** Jour (index dans WEEK) et minutes écoulées, à l'heure de Paris. */
+  function nowInParis(): { dayIndex: number; minutes: number } {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Paris',
+      weekday: 'long',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+    }).formatToParts(new Date());
+    const get = (type: string) => parts.find((part) => part.type === type)?.value ?? '';
+    return {
+      dayIndex: WEEK.indexOf(get('weekday') as Day),
+      minutes: Number(get('hour')) * 60 + Number(get('minute')),
+    };
+  }
+
+  function statusText(slots: OpeningSlot[], lang: Lang): { open: boolean; text: string } {
+    const t = labels[lang];
+    const { dayIndex, minutes } = nowInParis();
+    const slotsOf = (day: Day) =>
+      slots.filter((slot) => slot.days.includes(day)).sort((a, b) => toMinutes(a.opens) - toMinutes(b.opens));
+
+    const today = WEEK[dayIndex];
+    const current = slotsOf(today).find((s) => toMinutes(s.opens) <= minutes && minutes < toMinutes(s.closes));
+    if (current) return { open: true, text: t.open(formatTime(current.closes, lang)) };
+
+    const laterToday = slotsOf(today).find((s) => toMinutes(s.opens) > minutes);
+    if (laterToday) return { open: false, text: t.today(formatTime(laterToday.opens, lang)) };
+
+    for (let offset = 1; offset <= 7; offset++) {
+      const day = WEEK[(dayIndex + offset) % 7];
+      const first = slotsOf(day)[0];
+      if (!first) continue;
+      const opens = formatTime(first.opens, lang);
+      return { open: false, text: offset === 1 ? t.tomorrow(opens) : t.later(dayName(day, lang), opens) };
+    }
+    return { open: false, text: '' };
+  }
+
+  for (const element of document.querySelectorAll<HTMLElement>('[data-open-status]')) {
+    const lang = (element.dataset.lang ?? 'fr') as Lang;
+    const { open, text } = statusText(JSON.parse(element.dataset.hours ?? '[]'), lang);
+    if (!text) continue;
+    element.textContent = text;
+    element.dataset.state = open ? 'open' : 'closed';
+    element.hidden = false;
+  }
+</script>
+
+<style>
+  .status {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-alt);
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: 600;
+  }
+
+  .status[hidden] {
+    display: none;
+  }
+
+  .status::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--radius-pill);
+    background: currentColor;
+  }
+
+  .status[data-state='open'] {
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .status[data-state='open']::before {
+      animation: pulse 2s ease-in-out infinite;
+    }
+  }
+
+  @keyframes pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+</style>

@@ -1,0 +1,114 @@
+---
+import { seanceSteps } from '../data/seance';
+
+interface Props {
+  /** Par défaut : étapes en français. */
+  steps?: typeof seanceSteps;
+}
+
+const { steps = seanceSteps } = Astro.props;
+---
+
+<ol class="steps reveal-children">
+  {
+    steps.map(({ title, text }, index) => (
+      <li class="step">
+        <span class="step__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+        <h3>{title}</h3>
+        <p>{text}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .steps {
+    position: relative;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Fil pointillé entre les étapes, visible dans les espaces entre les cartes (desktop) */
+  @media (min-width: 52rem) {
+    .steps::before {
+      content: '';
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      top: 4rem;
+      border-top: 2px dashed var(--color-accent);
+      opacity: 0.5;
+    }
+  }
+
+  .step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-4);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    transition:
+      transform var(--transition),
+      box-shadow var(--transition);
+  }
+
+  @media (hover: hover) {
+    .step:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+  }
+
+  .step__number {
+    color: var(--color-accent-text);
+    font-family: var(--font-heading);
+    font-size: var(--text-2xl);
+    font-style: italic;
+    line-height: 1;
+  }
+
+  .step p {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  /* Mobile : frise verticale compacte, numéro à gauche, fil pointillé entre les étapes */
+  @media (max-width: 51.99rem) {
+    .steps {
+      gap: var(--space-3);
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      left: calc(var(--space-4) + 1.25rem);
+      top: 2rem;
+      bottom: 2rem;
+      border-left: 2px dashed var(--color-accent);
+      opacity: 0.5;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr;
+      gap: var(--space-1) var(--space-3);
+      padding: var(--space-4);
+    }
+
+    .step__number {
+      grid-row: span 2;
+      font-size: var(--text-xl);
+      text-align: center;
+    }
+
+    .step > :not(.step__number) {
+      grid-column: 2;
+    }
+  }
+</style>

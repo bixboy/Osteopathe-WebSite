@@ -1,0 +1,88 @@
+---
+interface Props {
+  title: string;
+  eyebrow?: string;
+  lead?: string;
+}
+
+const { title, eyebrow, lead } = Astro.props;
+---
+
+<!-- En-tête des pages intérieures. Le slot accueille une icône ou un bouton. -->
+<section class="page-header">
+  <div class="container page-header__inner">
+    {Astro.slots.has('icon') && <div class="enter"><slot name="icon" /></div>}
+    {eyebrow && <span class="eyebrow enter" style="--delay: 1">{eyebrow}</span>}
+    <h1 class="enter" style="--delay: 2">{title}</h1>
+    {lead && <p class="lead enter" style="--delay: 3">{lead}</p>}
+    {Astro.slots.has('default') && <div class="enter" style="--delay: 4"><slot /></div>}
+  </div>
+</section>
+
+<style>
+  .page-header {
+    position: relative;
+    overflow: hidden;
+    padding-block: var(--space-6);
+    background: var(--color-surface-alt);
+  }
+
+  /* Forme organique décorative */
+  .page-header::after {
+    content: '';
+    position: absolute;
+    right: -8rem;
+    top: -6rem;
+    width: 24rem;
+    height: 24rem;
+    border-radius: 58% 42% 52% 48% / 48% 56% 44% 52%;
+    background: var(--color-sand);
+    opacity: 0.8;
+  }
+
+  /* Mobile : forme plus petite, rejetée dans le coin pour ne pas passer derrière le titre */
+  @media (max-width: 47.99rem) {
+    .page-header {
+      padding-block: var(--space-5);
+    }
+
+    .page-header::after {
+      right: -7rem;
+      top: -7rem;
+      width: 13rem;
+      height: 13rem;
+      opacity: 0.6;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .page-header::after {
+      animation: morph 18s ease-in-out infinite;
+    }
+  }
+
+  @keyframes morph {
+    50% {
+      border-radius: 44% 56% 40% 60% / 58% 42% 56% 44%;
+      rotate: 12deg;
+    }
+  }
+
+  .page-header__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  h1 {
+    max-width: 20ch;
+    font-size: var(--text-2xl);
+  }
+
+  .lead {
+    max-width: var(--container-text);
+  }
+</style>

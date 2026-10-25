@@ -1,0 +1,121 @@
+---
+import { site } from '../data/site';
+import { footerNav, mainNav } from '../data/navigation';
+import { formatOpeningHours, phoneHref } from '../lib/format';
+import BookingButton from './BookingButton.astro';
+import Logo from './Logo.astro';
+
+const { address, contact } = site;
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <Logo />
+      <p>Une approche globale et personnalisée, du nourrisson à l’adulte.</p>
+      <BookingButton variant="light" size="sm" />
+    </div>
+
+    <div>
+      <h2 class="footer__title">Cabinet</h2>
+      <address>
+        <a href={site.google.mapsUrl} target="_blank" rel="noopener">
+          {address.street}<br />{address.postalCode} {address.city}
+          <span class="visually-hidden">(voir sur la carte, nouvel onglet)</span>
+        </a>
+        {contact.phone && (<><br /><a href={phoneHref(contact.phone)}>{contact.phone}</a></>)}
+      </address>
+    </div>
+
+    <div>
+      <h2 class="footer__title">Horaires</h2>
+      <ul>{formatOpeningHours(site.openingHours).map((line) => <li>{line}</li>)}</ul>
+    </div>
+
+    <nav aria-label="Plan du site">
+      <h2 class="footer__title">Navigation</h2>
+      <ul>{mainNav.map(({ label, href }) => <li><a href={href}>{label}</a></li>)}</ul>
+    </nav>
+  </div>
+
+  <div class="container footer__bottom">
+    <p>© {year} {site.name}, {site.profession}</p>
+    <ul>{footerNav.map(({ label, href }) => <li><a href={href}>{label}</a></li>)}</ul>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-top: var(--space-6);
+    background: var(--color-footer-bg);
+    color: var(--color-footer-text);
+    font-size: var(--text-sm);
+  }
+
+  .footer a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    color: var(--color-on-primary);
+    text-decoration: underline;
+  }
+
+  .footer__grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    padding-bottom: var(--space-6);
+  }
+
+  .footer__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    color: var(--color-on-primary);
+  }
+
+  .footer__brand p {
+    color: var(--color-footer-text);
+  }
+
+  .footer__title {
+    margin-bottom: var(--space-3);
+    color: var(--color-on-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  address {
+    font-style: normal;
+  }
+
+  ul {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-block: var(--space-4);
+    border-top: 1px solid color-mix(in srgb, var(--color-footer-text) 20%, transparent);
+    font-size: var(--text-xs);
+  }
+
+  .footer__bottom ul {
+    display: flex;
+    gap: var(--space-4);
+  }
+</style>

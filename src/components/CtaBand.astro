@@ -1,0 +1,99 @@
+---
+import { Phone } from '@lucide/astro';
+import { site } from '../data/site';
+import { phoneHref } from '../lib/format';
+import BookingButton from './BookingButton.astro';
+import Button from './Button.astro';
+
+interface Props {
+  title?: string;
+  text?: string;
+  /** Libellé du bouton Doctolib (ex. page en anglais). */
+  bookLabel?: string;
+}
+
+const {
+  title = 'Prenez rendez-vous en quelques clics',
+  text = 'Choisissez le créneau qui vous convient directement sur Doctolib.',
+  bookLabel,
+} = Astro.props;
+---
+
+<section class="cta" aria-labelledby="cta-title">
+  <div class="container cta__inner">
+    <div>
+      <h2 id="cta-title">{title}</h2>
+      <p>{text}</p>
+    </div>
+    <div class="cta__actions">
+      <BookingButton variant="light" label={bookLabel} />
+      {
+        site.contact.phone && (
+          <Button href={phoneHref(site.contact.phone)} variant="light">
+            <Phone size={18} aria-hidden="true" />
+            {site.contact.phone}
+          </Button>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    overflow: hidden;
+    padding-block: var(--space-6);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  /* Cercles décoratifs */
+  .cta::before,
+  .cta::after {
+    content: '';
+    position: absolute;
+    border: 1px solid color-mix(in srgb, var(--color-on-primary) 18%, transparent);
+    border-radius: var(--radius-pill);
+    pointer-events: none;
+  }
+
+  .cta::before {
+    width: 22rem;
+    height: 22rem;
+    right: -6rem;
+    top: -10rem;
+  }
+
+  .cta::after {
+    width: 14rem;
+    height: 14rem;
+    right: 10rem;
+    bottom: -9rem;
+  }
+
+  .cta__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+  }
+
+  p {
+    margin-top: var(--space-2);
+    opacity: 0.85;
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+---
+
+<BaseLayout title="Politique de confidentialité" noindex>
+  <PageHeader title="Politique de confidentialité" />
+
+  <section class="section">
+    <div class="container prose">
+      <!-- TODO(phase 4): faire relire ; à mettre à jour si un formulaire ou une mesure d'audience est ajouté -->
+      <p>
+        Ce site ne dépose aucun cookie et ne collecte aucune donnée personnelle. La prise de
+        rendez-vous s’effectue sur Doctolib, qui applique sa propre politique de confidentialité.
+      </p>
+      <h2>Carte Google Maps</h2>
+      <p>
+        La carte de la page « Infos pratiques » n’est chargée que si vous cliquez sur « Afficher la
+        carte ». Google peut alors collecter des données de navigation et déposer des cookies,
+        conformément à sa
+        <a href="https://policies.google.com/privacy?hl=fr" target="_blank" rel="noopener">politique de confidentialité</a>.
+      </p>
+      <h2>Avis Google</h2>
+      <p>
+        Les avis affichés sont des extraits d’avis publiés sur Google, recopiés sur ce site : leur
+        affichage n’entraîne aucune connexion de votre navigateur aux serveurs de Google.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

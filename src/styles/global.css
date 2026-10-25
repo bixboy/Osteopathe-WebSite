@@ -1,0 +1,235 @@
+@import './tokens.css';
+
+/* ---------- Reset ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + var(--space-3));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--text-3xl); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-lg); }
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: var(--color-primary);
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Utilitaires de mise en page (les seuls autorisés en global) ---------- */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--space-7);
+}
+
+.section--alt {
+  background: var(--color-surface-alt);
+}
+
+.section--sand {
+  background: var(--color-sand);
+}
+
+.stack > * + * {
+  margin-top: var(--space-4);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-text);
+}
+
+.lead {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  z-index: 100;
+  left: var(--space-3);
+  top: -100%;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface);
+}
+
+.skip-link:focus {
+  top: var(--space-3);
+}
+
+/* ---------- Animations d'apparition (sans JavaScript) ----------
+ * .enter            : au chargement ; décalage avec style="--delay: 2" (×90 ms)
+ * .reveal           : quand l'élément entre à l'écran au défilement
+ * .reveal-children  : idem pour chaque enfant direct, légèrement décalés
+ * Anime `translate` (pas `transform`) pour ne pas écraser les effets de survol.
+ * Toujours écrire les propriétés détaillées (animation-name…), JAMAIS le raccourci `animation` avec
+ * `animation-timeline` : le minifieur les fusionne en une écriture que Chrome refuse (animation ignorée).
+ * Navigateur sans scroll-driven animations ou mouvement réduit : contenu visible tel quel.
+ */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    translate: 0 var(--reveal-distance);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .enter {
+    animation: fade-up var(--duration-enter) var(--ease-out) both;
+    animation-delay: calc(var(--delay, 0) * 90ms);
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal,
+    .reveal-children > * {
+      animation-name: fade-up;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 80%;
+    }
+
+    .reveal-children > :nth-child(3n + 2) {
+      animation-range: entry 10% entry 90%;
+    }
+
+    .reveal-children > :nth-child(3n + 3) {
+      animation-range: entry 20% entry 100%;
+    }
+  }
+}
+
+/* ---------- Texte long (contenu Markdown) ---------- */
+
+.prose {
+  max-width: var(--container-text);
+}
+
+.prose > * + * {
+  margin-top: var(--space-3);
+}
+
+.prose h2 {
+  margin-top: var(--space-5);
+  font-size: var(--text-xl);
+}
+
+.prose h3 {
+  margin-top: var(--space-4);
+}
+
+.prose ul {
+  padding: 0;
+  list-style: none;
+}
+
+.prose li {
+  position: relative;
+  padding-left: var(--space-4);
+}
+
+.prose li + li {
+  margin-top: var(--space-2);
+}
+
+.prose li::before {
+  content: '';
+  position: absolute;
+  left: 0.25rem;
+  top: 0.7em;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+}

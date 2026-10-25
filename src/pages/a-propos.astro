@@ -1,0 +1,176 @@
+---
+import { Image } from 'astro:assets';
+import { Briefcase, GraduationCap } from '@lucide/astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { experiences, formations, type ParcoursItem } from '../data/parcours';
+import { site } from '../data/site';
+import portrait from '../assets/images/portrait-fanny-gerszkourez.webp';
+
+const timelines: { title: string; icon: typeof GraduationCap; items: ParcoursItem[] }[] = [
+  { title: 'Formation', icon: GraduationCap, items: formations },
+  { title: 'Expérience', icon: Briefcase, items: experiences },
+];
+---
+
+<BaseLayout title="À propos" description={`Parcours, formations et domaines d’expertise de ${site.name}, ostéopathe D.O. à Bayeux.`}>
+  <PageHeader eyebrow="À propos" title={site.name} lead={`${site.profession} installée à Bayeux depuis 2017.`} />
+
+  <section class="section">
+    <div class="container about">
+      <div class="about__aside reveal">
+        <Image
+          class="portrait"
+          src={portrait}
+          alt={`Portrait de ${site.name}`}
+          widths={[320, portrait.width]}
+          sizes="(min-width: 52rem) 24rem, 100vw"
+          loading="eager"
+        />
+
+        <div class="expertises">
+          <h2>Domaines d’expertise</h2>
+          <ul>{site.expertises.map((expertise) => <li>{expertise}</li>)}</ul>
+        </div>
+      </div>
+
+      <div class="about__main">
+        <!-- TODO(cliente): texte de présentation et approche, dans ses mots -->
+        <div class="prose stack">
+          <p>
+            Diplômée de l’Institut Supérieur d’Ostéopathie de Paris en 2015, j’ai exercé à
+            Morsang-sur-Seine avant de m’installer à Bayeux en 2017.
+          </p>
+          <p>
+            Formée en périnatalité et en approche tissulaire, je reçois les nourrissons, les enfants,
+            les femmes enceintes, les sportifs et les adultes.
+          </p>
+        </div>
+
+        {
+          timelines.map(({ title, icon: Icon, items }) => (
+            <div class="stack">
+              <h2>{title}</h2>
+              <ol class="timeline reveal-children">
+                {items.map(({ period, title, place }) => (
+                  <li>
+                    <span class="timeline__icon">
+                      <Icon size={18} aria-hidden="true" />
+                    </span>
+                    <div>
+                      <span class="timeline__period">{period}</span>
+                      <p class="timeline__title">{title}</p>
+                      {place && <p class="timeline__place">{place}</p>}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .about {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  @media (min-width: 52rem) {
+    .about {
+      grid-template-columns: 1fr 1.4fr;
+    }
+
+    .about__aside {
+      position: sticky;
+      top: calc(var(--header-height) + var(--space-4));
+    }
+  }
+
+  .about__aside,
+  .about__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .about__aside :global(.portrait) {
+    width: 100%;
+    max-width: 24rem;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius-lg) var(--radius-lg) 12rem 12rem;
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+  }
+
+  .expertises ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .expertises li {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    font-size: var(--text-sm);
+  }
+
+  .timeline {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .timeline li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    align-items: start;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .timeline__icon {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+  }
+
+  .timeline__period {
+    color: var(--color-accent-text);
+    font-family: var(--font-heading);
+    font-style: italic;
+  }
+
+  .timeline__title {
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .timeline__place {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+</style>
