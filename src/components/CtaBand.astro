@@ -44,8 +44,13 @@ const {
     position: relative;
     overflow: hidden;
     padding-block: var(--space-6);
-    background: var(--color-primary);
+    background: var(--gradient-brand);
     color: var(--color-on-primary);
+  }
+
+  /* Contour clavier lisible sur le dégradé */
+  .cta :global(:focus-visible) {
+    outline-color: var(--color-on-primary);
   }
 
   /* Cercles décoratifs */

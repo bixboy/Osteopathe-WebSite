@@ -1,28 +1,33 @@
 /*
  * Design tokens : SEULE source des couleurs, typos, espacements.
  * Les composants n'utilisent que var(--...), jamais de valeur en dur.
- * Ambiance : sauge, sable, crème — voir docs/DESIGN.md.
+ * Ambiance : bleu, violet, lilas — voir docs/DESIGN.md.
  */
 :root {
   /* Couleurs */
-  --color-bg: #f8f5ef;
+  --color-bg: #f8f7fd;
   --color-surface: #ffffff;
-  --color-surface-alt: #eef2ec;
-  --color-sand: #efe5d5;
-  --color-text: #22302b;
-  --color-text-muted: #5a6964;
-  --color-primary: #3f6b5c;
-  --color-primary-hover: #30574a;
-  --color-primary-soft: #dfe9e3;
+  --color-surface-alt: #eef1fb;
+  --color-lilac: #e9e3f8;
+  --color-text: #24243f;
+  --color-text-muted: #585a78;
+  --color-primary: #2f5aa8;
+  --color-primary-hover: #25478a;
+  --color-primary-soft: #dfe8f7;
   --color-on-primary: #ffffff;
-  --color-accent: #b98d5a;
-  /* Variante foncée pour le texte : contraste AA (≥ 4.5:1) sur tous les fonds */
-  --color-accent-text: #875f34;
-  --color-border: #e5dfd3;
-  --color-focus: #1d5fd1;
+  /* Décors uniquement (pastilles, pointillés, dégradés) : pas de texte ni d'indicateur */
+  --color-accent: #a48be0;
+  /* Grands textes et indicateurs : contraste ≥ 3:1 sur tous les fonds */
+  --color-accent-display: #8b65d2;
+  /* Texte courant : contraste AA (≥ 4.5:1) sur tous les fonds */
+  --color-accent-text: #784ccb;
+  --color-border: #e4e1f1;
+  --color-focus: #6b46b0;
   --color-star: #d29a2e;
-  --color-footer-bg: #22302b;
-  --color-footer-text: #d7ddd9;
+  --color-footer-bg: #232347;
+  --color-footer-text: #d9d9ec;
+  /* Dégradé de marque : texte blanc AA sur toute sa longueur */
+  --gradient-brand: linear-gradient(120deg, var(--color-primary), var(--color-accent-text));
 
   /* Typographie */
   --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -56,8 +61,8 @@
   --radius: 1rem;
   --radius-lg: 2rem;
   --radius-pill: 999px;
-  --shadow-sm: 0 1px 2px rgb(34 48 43 / 0.06);
-  --shadow: 0 2px 4px rgb(34 48 43 / 0.04), 0 12px 32px rgb(34 48 43 / 0.08);
+  --shadow-sm: 0 1px 2px rgb(36 36 63 / 0.06);
+  --shadow: 0 2px 4px rgb(36 36 63 / 0.04), 0 12px 32px rgb(36 36 63 / 0.08);
 
   /* Mouvement */
   --transition: 180ms ease;

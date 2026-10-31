@@ -5,6 +5,7 @@ shortTitle: "Tête, cou & mâchoire"
 icon: "jaw"
 description: "Ostéopathie des troubles fonctionnels cervico-crâniens à Bayeux : tensions de la nuque, de la mâchoire (ATM) et de la tête."
 order: 5
+draft: true
 summary: "Tensions de la nuque, de la mâchoire et de la tête."
 en:
   title: "Head, neck & jaw"

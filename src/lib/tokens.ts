@@ -1,7 +1,7 @@
 import tokensCss from '../styles/tokens.css?raw';
 
 /**
- * Lit une variable de src/styles/tokens.css (ex. token('color-primary') -> "#3f6b5c").
+ * Lit une variable de src/styles/tokens.css (ex. token('color-primary') -> "#2f5aa8").
  * Pour les rares endroits hors CSS qui ont besoin d'une couleur (images générées,
  * <meta name="theme-color">) : tokens.css reste la seule source.
  */

@@ -13,7 +13,10 @@ La page Doctolib : https://www.doctolib.fr/osteopathe/bayeux/fanny-gerszkourez
 | Accès | 1er étage avec ascenseur, parking gratuit | ⚠️ |
 | Téléphone | — | ❌ |
 | E-mail | — | ❌ |
-| Horaires | Lun-Ven 9h-12h et 13h-19h, Sam 9h-12h | ✅ Doctolib |
+| Horaires | Lun-Ven 9h-12h et 14h30-19h, fermé le samedi | ✅ validé par la cliente (31/10/2026) |
+| Durée d'une séance | 45 min (`seanceDuration`, FAQ) | ✅ validé par la cliente (31/10/2026) |
+| Publics | Sportifs mis en avant (demande de la cliente) ; « Tête, cou & mâchoire » retiré du site (`draft: true`, 31/10/2026) | ✅ validé par la cliente |
+| Conseils après la séance (page sportifs) | Hydratation, repos, reprise intense après environ 48 h, fatigue passagère (`src/content/soins/sportifs.md`) | ⚠️ rédigés sans source cliente, à valider |
 | Nouveaux patients | Acceptés (`acceptsNewPatients`) | ✅ Doctolib (peut changer) |
 | Tarifs | 55 € toutes consultations (1re ou suivi, tous publics) ; non remboursé AM ; carte Vitale non acceptée | ✅ Doctolib |
 | Paiement | Espèces, chèque, CB | ✅ Doctolib |

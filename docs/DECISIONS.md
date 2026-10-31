@@ -30,3 +30,4 @@ Format : date · décision · raison. Ajouter une ligne à chaque choix structur
 | 2026-10-25 | Prévisualisation GitHub Pages en `noindex` (`SITE_PREVIEW`) | Ne pas faire indexer une adresse provisoire qui concurrencerait le futur domaine |
 | 2026-10-25 | JSON-LD en un graphe relié (WebSite, cabinet, praticienne, Service, BreadcrumbList, FAQPage) | Identité d'entité claire pour Google et les moteurs IA ; sameAs Doctolib + Google Maps |
 | 2026-10-25 | `llms.txt` / `llms-full.txt` générés au build | Résumé factuel pour les assistants IA, toujours cohérent avec le site |
+| 2026-10-31 | Palette bleu / violet à la place de sauge / sable (`--color-sand` → `--color-lilac`) | Couleurs préférées de la cliente ; bleu pour les actions, violet pour les accents |

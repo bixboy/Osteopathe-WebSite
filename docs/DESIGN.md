@@ -13,17 +13,18 @@
 Chaleureux, rassurant, professionnel. Vouvoiement. Phrases courtes, vocabulaire simple, sans jargon.
 Pas de superlatifs ni de promesses (voir contraintes légales dans `docs/SEO.md`).
 
-## Identité visuelle (v1)
+## Identité visuelle (v2)
 
-- Ambiance : douceur, nature, sérénité. Fond crème, vert sauge (`--color-primary`), sable/cuivre (`--color-accent`).
+- Couleurs choisies par la cliente : bleu et violet.
+- Ambiance : douceur, sérénité. Fond blanc lilas, bleu pour les actions (`--color-primary`), violet clair pour les accents (`--color-accent` en décor, `--color-accent-display` pour les grands textes et indicateurs, `--color-accent-text` pour le texte courant), dégradé bleu → violet (`--gradient-brand`) sur le bandeau d'appel à l'action.
 - Titres : Fraunces (serif douce, italique pour les mots mis en valeur). Texte : Inter.
 - Formes organiques arrondies (blobs) en décor ; cartes blanches à bord fin, ombre au survol.
-- Rythme : sections alternées crème / sauge clair (`.section--alt`), bandeau vert d'appel à l'action, footer vert foncé.
+- Rythme : sections alternées blanc lilas / bleu pâle (`.section--alt`) / lilas (`.section--lilac`), bandeau dégradé d'appel à l'action, footer indigo foncé.
 - Placeholders à remplacer par de vraies photos : forme du hero, portrait « À propos », carte d'accès.
 
 ## Composants d'UI
 
-`Button`, `BookingButton`, `Logo`, `Header`, `Footer`, `PageHeader` (en-tête des pages intérieures), `SectionHeader` (eyebrow + h2 + lead), `SoinCard`/`SoinGrid`, `SoinIcon`, `PracticalInfo`, `SessionSteps`, `CtaBand`, `StarRating`, `GoogleReviews`, `GoogleMap`, `TrustBar` (points forts sous le hero), `MobileBookingBar` (barre RDV fixe sur mobile), `OpenStatus` (badge Ouvert / Fermé), `Carousel` (grille centrée sur grand écran, carrousel à glisser sur mobile ; enfants = `<li>`). `PracticalInfo`, `SessionSteps`, `CtaBand`, `BookingButton` acceptent une langue ou un libellé pour la page /en.
+`Button`, `BookingButton`, `Logo`, `Header`, `Footer`, `PageHeader` (en-tête des pages intérieures), `SectionHeader` (eyebrow + h2 + lead), `SoinCard`/`SoinGrid`, `SportHighlight` (encart dégradé d'un soin mis en avant, sur l'accueil), `SoinIcon`, `PracticalInfo`, `SessionSteps`, `CtaBand`, `StarRating`, `GoogleReviews`, `GoogleMap`, `TrustBar` (points forts sous le hero), `MobileBookingBar` (barre RDV fixe sur mobile), `OpenStatus` (badge Ouvert / Fermé), `Carousel` (grille centrée sur grand écran, carrousel à glisser sur mobile ; enfants = `<li>`). `PracticalInfo`, `SessionSteps`, `CtaBand`, `BookingButton` acceptent une langue ou un libellé pour la page /en.
 
 ## Animations
 

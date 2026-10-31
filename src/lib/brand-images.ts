@@ -79,7 +79,7 @@ export function ogImageSvg(): Promise<string> {
         width: 540,
         height: 540,
         borderRadius: '50%',
-        backgroundImage: `linear-gradient(145deg, ${token('color-primary-soft')}, ${token('color-primary')})`,
+        backgroundImage: `linear-gradient(145deg, ${token('color-primary-soft')}, ${token('color-accent')}, ${token('color-primary')})`,
       }),
       h('div', {
         position: 'absolute',
@@ -99,7 +99,7 @@ export function ogImageSvg(): Promise<string> {
             fontSize: 26,
             letterSpacing: 4,
             textTransform: 'uppercase',
-            color: token('color-accent'),
+            color: token('color-accent-text'),
           },
           `${site.profession} · ${address.city}`,
         ),
