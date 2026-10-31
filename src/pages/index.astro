@@ -10,6 +10,7 @@ import SectionHeader from '../components/SectionHeader.astro';
 import SessionSteps from '../components/SessionSteps.astro';
 import SoinGrid from '../components/SoinGrid.astro';
 import SoinIcon from '../components/SoinIcon.astro';
+import SportHighlight from '../components/SportHighlight.astro';
 import TrustBar from '../components/TrustBar.astro';
 import { site } from '../data/site';
 import { seanceDuration } from '../data/seance';
@@ -19,6 +20,7 @@ import { link } from '../lib/paths';
 import portrait from '../assets/images/portrait-fanny-gerszkourez.webp';
 
 const soins = await getSoins();
+const sportifs = soins.find((soin) => soin.id === 'sportifs');
 const firstName = site.name.split(' ')[0];
 ---
 
@@ -29,7 +31,7 @@ const firstName = site.name.split(' ')[0];
         <span class="eyebrow enter">{site.profession} · {site.address.city}</span>
         <h1 class="enter" style="--delay: 1">Prendre soin de votre corps, <em>à chaque étape</em> de la vie</h1>
         <p class="lead enter" style="--delay: 2">
-          Nourrissons, femmes enceintes, sportifs et adultes : une ostéopathie douce, à l’écoute
+          Sportifs, nourrissons, femmes enceintes et adultes : une ostéopathie douce, à l’écoute
           et adaptée à chacun, à {site.address.city}.
         </p>
         <div class="hero__actions enter" style="--delay: 3">
@@ -67,6 +69,7 @@ const firstName = site.name.split(' ')[0];
         lead="Chaque séance tient compte de votre histoire, de votre rythme et de vos besoins."
       />
       <SoinGrid soins={soins} />
+      {sportifs && <SportHighlight soin={sportifs} />}
     </div>
   </section>
 
@@ -133,7 +136,7 @@ const firstName = site.name.split(' ')[0];
     height: 28rem;
     left: -10rem;
     top: -8rem;
-    background: var(--color-sand);
+    background: var(--color-lilac);
   }
 
   .hero::after {
@@ -166,7 +169,7 @@ const firstName = site.name.split(' ')[0];
   }
 
   h1 em {
-    color: var(--color-primary);
+    color: var(--color-accent-display);
     font-style: italic;
   }
 
@@ -209,8 +212,8 @@ const firstName = site.name.split(' ')[0];
     margin-inline: auto;
     border-radius: 58% 42% 52% 48% / 48% 56% 44% 52%;
     background:
-      radial-gradient(circle at 30% 25%, var(--color-sand), transparent 60%),
-      linear-gradient(145deg, var(--color-primary-soft), var(--color-primary));
+      radial-gradient(circle at 30% 25%, var(--color-lilac), transparent 60%),
+      linear-gradient(145deg, var(--color-primary-soft), var(--color-accent), var(--color-primary));
   }
 
   /* Petites pastilles décoratives qui flottent autour de la forme */

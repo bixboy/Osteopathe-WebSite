@@ -23,7 +23,7 @@ export const site = {
   name: 'Fanny Gerszkourez',
   title: 'Fanny Gerszkourez – Ostéopathe D.O. à Bayeux',
   description:
-    'Cabinet d’ostéopathie à Bayeux : nourrissons, femmes enceintes, sportifs et adultes. Prise de rendez-vous en ligne sur Doctolib.',
+    'Cabinet d’ostéopathie à Bayeux : sportifs, nourrissons, femmes enceintes et adultes. Prise de rendez-vous en ligne sur Doctolib.',
   locale: 'fr-FR',
   profession: 'Ostéopathe D.O.',
 
@@ -63,11 +63,10 @@ export const site = {
     ratingCheckedAt: '2026-10-25',
   },
 
-  // Source : fiche Doctolib (relevé du 2026-10-25). Plusieurs créneaux possibles pour les mêmes jours.
+  // Source : la cliente (2026-10-31). Plusieurs créneaux possibles pour les mêmes jours.
   openingHours: [
     { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '12:00' },
-    { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '13:00', closes: '19:00' },
-    { days: ['Saturday'], opens: '09:00', closes: '12:00' },
+    { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '14:30', closes: '19:00' },
   ] satisfies OpeningSlot[],
 
   /** Source : fiche Doctolib (2026-10-25). Peut changer : à vérifier avant chaque mise en ligne. */

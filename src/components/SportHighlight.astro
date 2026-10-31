@@ -1,0 +1,99 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { ArrowRight, Check } from '@lucide/astro';
+import { link } from '../lib/paths';
+import Button from './Button.astro';
+import SoinIcon from './SoinIcon.astro';
+
+interface Props {
+  soin: CollectionEntry<'soins'>;
+}
+
+const { soin } = Astro.props;
+// Les moments où consulter : la liste de cette section du Markdown du soin, pour ne pas recopier le texte
+const section = soin.body?.split(/^## /m).find((part) => part.startsWith('Quand consulter'));
+const moments = section?.match(/^- .+$/gm)?.map((line) => line.slice(2)) ?? [];
+---
+
+<!-- Encart de mise en avant d'un soin, sous la grille de l'accueil -->
+<article class="highlight reveal" aria-labelledby="highlight-titre">
+  <div class="highlight__content">
+    <span class="highlight__icon"><SoinIcon name={soin.data.icon} size={28} /></span>
+    <h3 id="highlight-titre">{soin.data.title}</h3>
+    <p>{soin.data.summary}</p>
+    <Button href={link(`/soins/${soin.id}`)} variant="light">
+      En savoir plus<span class="visually-hidden"> : {soin.data.title}</span>
+      <ArrowRight size={18} aria-hidden="true" />
+    </Button>
+  </div>
+  <ul>
+    {moments.map((moment) => <li><Check size={20} aria-hidden="true" />{moment}</li>)}
+  </ul>
+</article>
+
+<style>
+  .highlight {
+    display: grid;
+    gap: var(--space-5);
+    align-items: center;
+    margin-top: var(--space-5);
+    padding: var(--space-5) var(--space-4);
+    border-radius: var(--radius-lg);
+    background: var(--gradient-brand);
+    color: var(--color-on-primary);
+  }
+
+  @media (min-width: 52rem) {
+    .highlight {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      padding: var(--space-6);
+    }
+  }
+
+  /* Contour clavier lisible sur le dégradé */
+  .highlight :global(:focus-visible) {
+    outline-color: var(--color-on-primary);
+  }
+
+  .highlight__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .highlight__icon {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    color: var(--color-primary);
+  }
+
+  h3 {
+    color: inherit;
+    font-size: var(--text-2xl);
+  }
+
+  ul {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    gap: var(--space-2);
+    font-weight: 500;
+  }
+
+  /* Icône alignée sur la première ligne, même si le texte en fait plusieurs */
+  li :global(svg) {
+    flex-shrink: 0;
+    margin-top: var(--space-1);
+  }
+</style>

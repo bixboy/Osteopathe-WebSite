@@ -103,8 +103,8 @@ a:hover {
   background: var(--color-surface-alt);
 }
 
-.section--sand {
-  background: var(--color-sand);
+.section--lilac {
+  background: var(--color-lilac);
 }
 
 .stack > * + * {

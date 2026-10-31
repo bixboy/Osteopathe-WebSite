@@ -15,7 +15,7 @@ Arborescence proposée :
 /                     Accueil : accroche, CTA Doctolib, « Pour qui ? », infos pratiques
 /osteopathie          L'ostéopathie, déroulé d'une séance, FAQ
 /soins                Liste des publics
-/soins/<public>       Une page par public (nourrissons, femmes enceintes, sportifs, adultes, ATM)
+/soins/<public>       Une page par public (sportifs, nourrissons, femmes enceintes, adultes)
 /a-propos             Parcours, formations, approche, photo
 /infos-pratiques      Adresse, accès, carte, horaires, tarifs, paiement
 /mentions-legales     (noindex)
@@ -36,8 +36,9 @@ Arborescence proposée :
 
 - [ ] 👤 Recueillir les goûts de la cliente (3 sites qu'elle aime / n'aime pas)
 - [x] Palette v1 sauge / sable / crème → `tokens.css`
+- [x] Palette v2 bleu / violet (couleurs préférées de la cliente) → `tokens.css`
 - [ ] 👤 Validation de la direction visuelle par la cliente
-- [ ] Vérifier les contrastes AA de la palette finale
+- [x] Vérifier les contrastes AA de la palette v2 (sauf étoiles dorées, 2,5:1 sur blanc, couleur inchangée)
 - [x] Typographies auto-hébergées (Fraunces + Inter via fontsource)
 - [x] Favicon, icône Apple et image de partage générés au build (monogramme « FG »)
 - [ ] 👤 Logo de la cliente (s'il existe) pour remplacer le monogramme

@@ -30,5 +30,5 @@ export const seanceStepsEn: typeof seanceSteps = [
   },
 ];
 
-// TODO(cliente): durée réelle d'une séance
-export const seanceDuration = '45 min à 1 h';
+// Source : la cliente (2026-10-31)
+export const seanceDuration = '45 min';
