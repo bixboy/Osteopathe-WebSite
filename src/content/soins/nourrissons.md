@@ -11,17 +11,11 @@ en:
   summary: "A gentle approach adapted to every age, from newborns to teenagers."
 ---
 
-<!-- BROUILLON : texte à valider avec la cliente -->
-
 Les premiers mois de vie et la croissance sollicitent beaucoup le corps de l'enfant.
-L'ostéopathe utilise des techniques douces, adaptées à l'âge et au confort de l'enfant.
+L'ostéopathe utilise des techniques douces, adaptées à l'âge et au confort de l'enfant. Il n'y a pas d'âge minimum pour consulter (prise en charge possible dès les premiers jours de vie).
 
 ## Quand consulter ?
 
-- Inconfort après la naissance
+- Tensions et blocages liés à la vie intra-utérine ou à l'accouchement
 - Troubles fonctionnels du sommeil ou de la digestion
 - Suivi au cours de la croissance
-
-## Bon à savoir
-
-Pour un nourrisson de moins de 6 mois, la réglementation exige une attestation médicale de non-contre-indication avant toute manipulation du crâne, de la face ou du rachis. Pensez à la demander à votre médecin.
