@@ -1,22 +1,25 @@
 ---
 title: "Ostéopathie pour les adultes"
-seoTitle: "Ostéopathe à Bayeux : dos, nuque et tensions"
+seoTitle: "Ostéopathe adultes à Bayeux : approche globale"
 shortTitle: "Adultes"
 icon: "adult"
-description: "Ostéopathe à Bayeux pour les adultes : douleurs de dos, de nuque, tensions liées au travail ou au stress."
+description: "Ostéopathie pour adultes à Bayeux : une prise en charge globale du corps (douleurs, migraines, ronflements, troubles digestifs)."
 order: 4
-summary: "Douleurs de dos, de nuque, tensions liées au travail ou au quotidien."
+summary: "Une approche globale du corps : douleurs, migraines, ronflements, troubles digestifs."
 en:
   title: "Adults"
-  summary: "Back and neck pain, tension linked to work or daily life."
+  summary: "A whole-body approach: pain, migraines, snoring, digestive issues."
 ---
 
-<!-- BROUILLON : texte à valider avec la cliente -->
+On associe souvent l'ostéopathie aux seules douleurs articulaires ou au mal de dos. Pourtant, l'ostéopathie repose sur une vision globale du corps : l'ensemble des structures (articulations, muscles, viscères, crâne) forment une unité indissociable et s'influencent mutuellement.
 
-Postures prolongées, gestes répétés, stress : le quotidien laisse des traces dans le corps.
+Une tension ou une perte de mobilité dans une zone peut ainsi se répercuter à distance et perturber l'équilibre général. Par des techniques manuelles adaptées, l'ostéopathe prend en charge le corps dans son ensemble pour libérer les tensions et lui permettre de retrouver sa mobilité naturelle, bien au-delà des seules douleurs d'articulations.
 
 ## Quand consulter ?
 
-- Douleurs de dos ou de nuque
-- Tensions liées à la posture au travail
-- Maux de tête de tension
+La consultation concerne les douleurs du quotidien, mais pas uniquement :
+
+- Douleurs et tensions du quotidien
+- Migraines et maux de tête
+- Ronflements
+- Troubles digestifs

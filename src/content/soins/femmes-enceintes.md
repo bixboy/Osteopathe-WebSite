@@ -11,12 +11,9 @@ en:
   summary: "Support for the changes in your body during pregnancy and after birth."
 ---
 
-<!-- BROUILLON : texte à valider avec la cliente -->
-
 La grossesse transforme le corps en quelques mois. L'ostéopathie accompagne ces changements, en complément du suivi médical.
 
 ## Quand consulter ?
 
-- Douleurs lombaires ou pelviennes pendant la grossesse
-- Préparation à l'accouchement
-- Récupération après la naissance
+- Douleurs globales pendant la grossesse
+- Après l'accouchement : attendre 6 semaines post-partum avant de consulter, sauf en cas de grosse douleur
